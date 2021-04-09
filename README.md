@@ -1,5 +1,7 @@
 # Resumidor de vacunación
 
+[![scraper-daily](https://github.com/annaabsi/git-scraper-vacunacion/actions/workflows/main.yml/badge.svg)](https://github.com/annaabsi/git-scraper-vacunacion/actions/workflows/main.yml)
+
 Genera 3 distintas tablas de salida con sus respetivas columnas que se encuentran dentro de la carpeta `resultados/`
 
 1. `departamentos.csv`: FECHA_CORTE, DEPARTAMENTO, DOSIS1, DOSIS2
