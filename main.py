@@ -118,7 +118,7 @@ fig = px.choropleth(df_departamentos, geojson=countries, locations='DEPARTAMENTO
                            labels={'DOSIS1':'Dosis 1'}
                           )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-
+fig.show()
 
 
 ######################################################################
