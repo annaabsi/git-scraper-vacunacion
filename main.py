@@ -106,17 +106,17 @@ st.plotly_chart(fig_dosis1)
 ######################################################################
 st.header(f"4. Mapa al [{fecha_corte}]")
 
-st.write('[Working on it...]')
-jsonfile=open('geojson/peru_departamental.json',)
-countries = json.load(jsonfile)
-
+st.write('[Working on it]')
+with open('geojson/peru_departamental.json') as f:
+    countries = json.load(f)
 
 fig = px.choropleth(df_departamentos, geojson=countries, locations='DEPARTAMENTO', color='DOSIS1',
-                           color_continuous_scale="Viridis",
-                           range_color=(0, 12),
-                           scope="south america",
-                           labels={'DOSIS1':'Dosis 1'}
-                          )
+                    color_continuous_scale="Viridis",
+                    featureidkey="properties.id",
+                    range_color=(0, 12),
+                    scope="south america",
+                    labels={'DOSIS1':'Dosis 1'}
+                    )
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.show()
 
