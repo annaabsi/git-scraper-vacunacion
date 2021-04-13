@@ -108,9 +108,9 @@ st.plotly_chart(fig_dosis1)
 st.header(f"4. Mapa al [{fecha_corte}]")
 
 with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson') as response:
-    counties = json.load(response)
+    departamentos = json.load(response)
 
-fig = px.choropleth(df_departamentos, geojson=countries, locations='DEPARTAMENTO', color='DOSIS1',
+fig = px.choropleth(df_departamentos, geojson=departamentos, locations='DEPARTAMENTO', color='DOSIS1',
                     color_continuous_scale="Viridis",
                     featureidkey="properties.NOMBDEP",
                     range_color=(0, 12),
