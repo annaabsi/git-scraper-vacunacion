@@ -1,2 +1,4 @@
 pandas
 pandasql
+streamlit
+plotly
