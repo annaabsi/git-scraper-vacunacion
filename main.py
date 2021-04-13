@@ -7,6 +7,7 @@ import plotly.offline as py
 import plotly.express as px
 import datetime
 import json
+import requests
 from urllib.request import urlopen
 
 st.title("Dashboard")
