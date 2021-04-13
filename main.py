@@ -132,14 +132,14 @@ df = pd.DataFrame(regions, columns=['NOME_REG'])
 df['name_length'] = df['NOME_REG'].str.len()
 
 # Read the geojson data with Italy's regional borders [enter image description here][2]from github
-repo_url = 'https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson'
+repo_url = 'https://gist.githubusercontent.com/datajournalism-it/48e29e7c87dca7eb1d29/raw/2636aeef92ba0770a073424853f37690064eb0ea/regioni.geojson'
 italy_regions_geo = requests.get(repo_url).json()
 
 # Choropleth representing the length of region names
 fig = px.choropleth(data_frame=df,
                     geojson=italy_regions_geo,
-                    locations='DEPARTAMENTO', # name of dataframe column
-                    featureidkey='properties.id',  # path to field in GeoJSON feature object with which to match the values passed in to locations
+                    locations='NOME_REG', # name of dataframe column
+                    featureidkey='properties.NOME_REG',  # path to field in GeoJSON feature object with which to match the values passed in to locations
                     color='name_length',
                     color_continuous_scale="Magma",
                     scope="europe",
