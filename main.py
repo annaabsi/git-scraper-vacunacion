@@ -7,6 +7,7 @@ import plotly.offline as py
 import plotly.express as px
 import datetime
 import json
+from urllib.request import urlopen
 
 st.title("Dashboard")
 st.write("My description")
@@ -106,13 +107,12 @@ st.plotly_chart(fig_dosis1)
 ######################################################################
 st.header(f"4. Mapa al [{fecha_corte}]")
 
-st.write('[Working on it]')
-with open('geojson/peru_departamental.json') as f:
-    countries = json.load(f)
+with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson') as response:
+    counties = json.load(response)
 
 fig = px.choropleth(df_departamentos, geojson=countries, locations='DEPARTAMENTO', color='DOSIS1',
                     color_continuous_scale="Viridis",
-                    featureidkey="properties.id",
+                    featureidkey="properties.NOMBDEP",
                     range_color=(0, 12),
                     scope="south america",
                     labels={'DOSIS1':'Dosis 1'}
