@@ -108,16 +108,43 @@ st.plotly_chart(fig_dosis1)
 ######################################################################
 st.header(f"4. Mapa al [{fecha_corte}]")
 
-with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson') as response:
-    departamentos = json.load(response)
+# with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson') as response:
+#     departamentos = json.load(response)
+#
+# fig = px.choropleth(df_departamentos, geojson=departamentos, locations='DEPARTAMENTO', color='DOSIS1',
+#                     color_continuous_scale="Viridis",
+#                     featureidkey="properties.NOMBDEP",
+#                     range_color=(0, 12),
+#                     scope="south america",
+#                     labels={'DOSIS1':'Dosis 1'}
+#                     )
+# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+# fig.show()
 
-fig = px.choropleth(df_departamentos, geojson=departamentos, locations='DEPARTAMENTO', color='DOSIS1',
-                    color_continuous_scale="Viridis",
-                    featureidkey="properties.NOMBDEP",
-                    range_color=(0, 12),
-                    scope="south america",
-                    labels={'DOSIS1':'Dosis 1'}
-                    )
+regions = ['Piemonte', 'Trentino-Alto Adige', 'Lombardia', 'Puglia', 'Basilicata',
+           'Friuli Venezia Giulia', 'Liguria', "Valle d'Aosta", 'Emilia-Romagna',
+           'Molise', 'Lazio', 'Veneto', 'Sardegna', 'Sicilia', 'Abruzzo',
+           'Calabria', 'Toscana', 'Umbria', 'Campania', 'Marche']
+
+# Create a dataframe with the region names
+df = pd.DataFrame(regions, columns=['NOME_REG'])
+# For demonstration, create a column with the length of the region's name
+df['name_length'] = df['NOME_REG'].str.len()
+
+# Read the geojson data with Italy's regional borders [enter image description here][2]from github
+repo_url = 'https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson'
+italy_regions_geo = requests.get(repo_url).json()
+
+# Choropleth representing the length of region names
+fig = px.choropleth(data_frame=df,
+                    geojson=italy_regions_geo,
+                    locations='DEPARTAMENTO', # name of dataframe column
+                    featureidkey='properties.id',  # path to field in GeoJSON feature object with which to match the values passed in to locations
+                    color='name_length',
+                    color_continuous_scale="Magma",
+                    scope="europe",
+                   )
+fig.update_geos(showcountries=False, showcoastlines=False, showland=False, fitbounds="locations")
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 fig.show()
 
