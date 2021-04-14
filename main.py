@@ -102,7 +102,7 @@ fig_dosis2.update_xaxes(
     )
 )
 
-st.plotly_chart(fig_dosis1)
+st.plotly_chart(fig_dosis2)
 
 
 ######################################################################
@@ -146,8 +146,7 @@ fig = px.choropleth(data_frame=df,
                    )
 fig.update_geos(showcountries=False, showcoastlines=False, showland=False, fitbounds="locations")
 fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-fig.show()
-
+st.plotly_chart(fig)
 
 ######################################################################
 st.header(f"5. Avance por región [{fecha_corte}]")
