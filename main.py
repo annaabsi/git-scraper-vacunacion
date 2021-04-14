@@ -114,7 +114,6 @@ with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/p
 fig = px.choropleth(df_departamentos, geojson=departamentos, locations='DEPARTAMENTO', color='DOSIS1',
                     color_continuous_scale="Viridis",
                     featureidkey="properties.NOMBDEP",
-                    range_color=(0, 12),
                     scope="south america",
                     labels={'DOSIS1':'Dosis 1'}
                     )
