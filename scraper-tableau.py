@@ -9,6 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
+import datetime
 
 def scraper(PUBLIC_TABLEAU_VIEW,
             TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD,
@@ -23,7 +24,8 @@ def scraper(PUBLIC_TABLEAU_VIEW,
     # put driver executable file in the script directory
     chrome_driver = os.path.join(os.getcwd(),  "headers/chromedriver")
 
-    driver = webdriver.Chrome(options=chrome_options, executable_path=chrome_driver)
+    driver = webdriver.Chrome(options=chrome_options,
+                              executable_path=chrome_driver)
 
     driver.get(PUBLIC_TABLEAU_VIEW)
 
@@ -33,67 +35,59 @@ def scraper(PUBLIC_TABLEAU_VIEW,
 
     driver.close()
 
+
 def img2text(SCREENSHOT_FILENAME):
 
-    img=cv2.imread("resultados/"+SCREENSHOT_FILENAME)
+    img = cv2.imread("resultados/"+SCREENSHOT_FILENAME)
 
     cut_image = img[30: 150, :]
 
-    cv2.imwrite("resultados/"+SCREENSHOT_FILENAME[:-4]+'_cuted'+SCREENSHOT_FILENAME[-4:],cut_image)
+    cv2.imwrite(
+        "resultados/"+SCREENSHOT_FILENAME[:-4]+'_cuted'+SCREENSHOT_FILENAME[-4:], cut_image)
 
-    text=pytesseract.image_to_string(cut_image)
+    text = pytesseract.image_to_string(cut_image)
 
     return text
 
 
-if __name__ == "__main__":
+if name == "main":
 
-    URL_DOSIS1='https://public.tableau.com/views/VacunaCovid_CMP/Dosis1?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
-    URL_DOSIS2='https://public.tableau.com/views/VacunaCovid_CMP/Dosis2?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
-    SS='python-screenshot.png'
-    SS_CUTED='python-screenshot-cutted.png'
-    
+    URL_DOSIS1 = 'https://public.tableau.com/views/VacunaCovid_CMP/Dosis1?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
+    URL_DOSIS2 = 'https://public.tableau.com/views/VacunaCovid_CMP/Dosis2?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
+    SS = 'python-screenshot.png'
+    SS_CUTED = 'python-screenshot-cutted.png'
+
     ############
-    # DOSIS 1
+    # DOSIS 1 y 2
     ############
 
     scraper(PUBLIC_TABLEAU_VIEW=URL_DOSIS1,
             TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD=5,
             SCREENSHOT_FILENAME='dosis1-'+SS)
-    dosis1_text=img2text(SCREENSHOT_FILENAME='dosis1-'+SS)
-
-    scraper(PUBLIC_TABLEAU_VIEW=URL_DOSIS2,
-            TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD=5,
-            SCREENSHOT_FILENAME='dosis1-'+SS)
-    dosis1_text=img2text(SCREENSHOT_FILENAME='dosis1-'+SS)
-
-    dosis1_number=int(dosis1_text.replace(' ','').replace(',',''))
-    print(dosis1_number)
-
-    ############
-    # DOSIS 1
-    ############
-    scraper(PUBLIC_TABLEAU_VIEW=URL_DOSIS2,
-                TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD=5,
-                SCREENSHOT_FILENAME='dosis2-'+SS)
-    dosis2_text=img2text(SCREENSHOT_FILENAME='dosis2-'+SS)
+    dosis1_text = img2text(SCREENSHOT_FILENAME='dosis1-'+SS)
 
     scraper(PUBLIC_TABLEAU_VIEW=URL_DOSIS2,
             TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD=5,
             SCREENSHOT_FILENAME='dosis2-'+SS)
-    dosis2_text=img2text(SCREENSHOT_FILENAME='dosis2-'+SS)
+    dosis2_text = img2text(SCREENSHOT_FILENAME='dosis2-'+SS)
 
-    dosis2_number=int(dosis2_text.replace(' ','').replace(',',''))
+    dosis1_number = int(dosis1_text.replace(' ', '').replace(',', ''))
+    dosis2_number = int(dosis2_text.replace(' ', '').replace(',', ''))
+    print(dosis1_number)
     print(dosis2_number)
 
     ################
     # SAVING TO JSON
     ################
-    dosis_dict={}
-    dosis_dict['dosis1']=dosis1_number
-    dosis_dict['dosis2']=dosis2_number
-     
+    dosis_dict = {}
+    dosis_dict['dosis1'] = dosis1_number
+    dosis_dict['dosis2'] = dosis2_number
+
     print(dosis_dict)
 
-    with open("resultados/ambas_dosis.json", "w") as outfile: 
+    with open("resultados/ambas_dosis.json", "w") as outfile:
         json.dump(dosis_dict, outfile)
+
+    text_file = open("resultados/last_run.txt", "w")
+    n = text_file.write(datetime.datetime.now())
+    text_file.close()
