@@ -50,7 +50,7 @@ def img2text(SCREENSHOT_FILENAME):
     return text
 
 
-if name == "main":
+if __name__ == "__main__":
 
     URL_DOSIS1 = 'https://public.tableau.com/views/VacunaCovid_CMP/Dosis1?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
     URL_DOSIS2 = 'https://public.tableau.com/views/VacunaCovid_CMP/Dosis2?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en-GB&:embed=y&:showVizHome=n&:apiID=host1#navType=0&navSrc=Parse'
