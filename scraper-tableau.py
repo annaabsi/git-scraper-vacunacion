@@ -89,5 +89,5 @@ if __name__ == "__main__":
         json.dump(dosis_dict, outfile)
 
     text_file = open("resultados/last_run.txt", "w")
-    n = text_file.write(datetime.datetime.now())
+    n = text_file.write(str(datetime.datetime.now()))
     text_file.close()
