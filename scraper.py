@@ -60,6 +60,3 @@ result_query_departamentos['INDICE2']=round(result_query_departamentos['DOSIS2']
 result_query_dosis1.to_csv('resultados/dosis1.csv')
 result_query_dosis2.to_csv('resultados/dosis2.csv')
 result_query_departamentos.to_csv('resultados/departamentos.csv')
-
-
-print('Anna Bananna----------------------------------------------')
