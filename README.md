@@ -25,9 +25,9 @@ El programa consta de dos scripts separados:
 
 Genera 3 distintas tablas de salida con sus respetivas columnas que se encuentran dentro de la carpeta [resultados/](resultados/)
 
-1. [departamentos.csv](departamentos.csv): FECHA_CORTE, DEPARTAMENTO, DOSIS1, DOSIS2, POBLACION, INDICE1, INDICE2
-2. [dosis1.csv](dosis1.csv): FECHA_CORTE, FECHA_VACUNACION, DOSIS, TOTAL, ACUMULADO
-3. [dosis2.csv](dosis2.csv): FECHA_CORTE, FECHA_VACUNACION, DOSIS, TOTAL, ACUMULADO
+1. [departamentos.csv](resultados/departamentos.csv): FECHA_CORTE, DEPARTAMENTO, DOSIS1, DOSIS2, POBLACION, INDICE1, INDICE2
+2. [dosis1.csv](resultados/dosis1.csv): FECHA_CORTE, FECHA_VACUNACION, DOSIS, TOTAL, ACUMULADO
+3. [dosis2.csv](resultados/dosis2.csv): FECHA_CORTE, FECHA_VACUNACION, DOSIS, TOTAL, ACUMULADO
 
 Dónde: 
 
@@ -40,8 +40,8 @@ Dónde:
 - `TOTAL`: Número de personas vacunadas el día `FECHA_VACUNACION`
 - `ACUMULADO`: Número de personas vacunadas hasta el día `FECHA_CORTE`
 - `POBLACION`: Población por departamento según el "Estado de la población peruana 2020" - [INEI](https://www.inei.gob.pe/media/MenuRecursivo/publicaciones_digitales/Est/Lib1743/Libro.pdf)
-- `INDICE1`: Índice de vacunación por 100 000 hab para DOSIS1 = (DOSIS1/(POBLACION/100000))
-- `INDICE2`: Índice de vacunación por 100 000 hab para DOSIS2 = (DOSIS2/(POBLACION/100000))
+- `INDICE1`: Índice de vacunación por 100 000 hab para Dosis 1 = (`DOSIS1`/(`POBLACION`/100000))
+- `INDICE2`: Índice de vacunación por 100 000 hab para Dosis 2 = (`DOSIS2`/(`POBLACION`/100000))
 
 ### *scraper-tableau.py*
 
