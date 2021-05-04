@@ -7,6 +7,8 @@ import plotly.offline as py
 import plotly.express as px
 import datetime
 import json
+import requests
+from urllib.request import urlopen
 
 st.title("Dashboard")
 st.write("My description")
@@ -14,7 +16,7 @@ x=0
 
 ###############################################################
 df_departamentos=pd.read_csv("resultados/departamentos.csv")
- 
+
 fecha_corte= datetime.datetime.strptime(str(df_departamentos['FECHA_CORTE'][0]), '%Y%m%d').date()
 
 st.header(f"1. Dosis por departamento [{fecha_corte}]")
@@ -100,26 +102,25 @@ fig_dosis2.update_xaxes(
     )
 )
 
-st.plotly_chart(fig_dosis1)
+st.plotly_chart(fig_dosis2)
 
 
 ######################################################################
 st.header(f"4. Mapa al [{fecha_corte}]")
 
-st.write('[Working on it...]')
-# jsonfile=open('geojson/peru_departamental.json',)
-# countries = json.load(jsonfile)
+with urlopen('https://raw.githubusercontent.com/juaneladio/peru-geojson/master/peru_departamental_simple.geojson') as response:
+    departamentos = json.load(response)
 
+fig = px.choropleth(df_departamentos, geojson=departamentos, locations='DEPARTAMENTO', color='DOSIS1',
+                    color_continuous_scale="Viridis",
+                    featureidkey="properties.NOMBDEP",
+                    scope="south america",
+                    labels={'DOSIS1':'Dosis 1'}
+                    )
+fig.update_geos(showcountries=False, showcoastlines=False, showland=False, fitbounds="locations")
+fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-# fig = px.choropleth(df_departamentos, geojson=countries, locations='fips', color='unemp',
-#                            color_continuous_scale="Viridis",
-#                            range_color=(0, 12),
-#                            scope="peru",
-#                            labels={'unemp':'unemployment rate'}
-#                           )
-# fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-
-
+st.plotly_chart(fig)
 
 ######################################################################
 st.header(f"5. Avance por región [{fecha_corte}]")
