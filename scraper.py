@@ -6,7 +6,7 @@ df=pd.read_csv(URL_DATA)
 
 
 # Delete all not wanted columns
-df.drop(['UUID', 'GRUPO_RIESGO', 'EDAD', 'FABRICANTE', 'DIRESA', 'PROVINCIA', 'DISTRITO'], axis=1, inplace=True)
+df.drop(['UUID', 'GRUPO_RIESGO', 'FABRICANTE', 'DIRESA', 'PROVINCIA', 'DISTRITO'], axis=1, inplace=True)
 
 # Please write the full query on one line
 # DOSIS 1 y 2
