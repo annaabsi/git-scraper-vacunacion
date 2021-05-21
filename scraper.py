@@ -35,7 +35,7 @@ print(ps.sqldf(query_departamentos_sexo,locals()))
 # ACUMULADO POR GRUPO ETARIO
 bins = [18,20,30,40,50,60,70,80,df['EDAD'].max()+1]
 labels = ['18 a 19 años','20 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 69 años','70 a 79 años','80 años a más']
-poblacion_por_grupo_etario = [700000,1300000,2300000,3300000,4400000,5300000,5700000,900000] 
+poblacion_por_grupo_etario = [900000,5700000,5300000,4400000,3300000,2300000,1300000,700000] 
 result_df_edades = df
 result_df_edades.drop(['SEXO', 'FECHA_VACUNACION', 'DEPARTAMENTO'], axis=1, inplace=True)
 result_df_edades['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
