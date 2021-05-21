@@ -32,6 +32,17 @@ query_departamentos_sexo="""select FECHA_CORTE, DEPARTAMENTO, count (case when S
 result_query_departamentos_sexo=ps.sqldf(query_departamentos_sexo,locals())
 print(ps.sqldf(query_departamentos_sexo,locals()))
 
+# ACUMULADO POR GRUPO ETARIO
+bins = [18,20,30,40,50,60,70,80,df['EDAD'].max()+1]
+labels = ['18 a 19 años','20 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 69 años','70 a 79 años','80 años a más']
+poblacion_por_grupo_etario = [700000,1300000,2300000,3300000,4400000,5300000,5700000,900000] 
+result_df_edades = df.drop(['SEXO', 'FECHA_VACUNACION', 'DEPARTAMENTO'], axis=1, inplace=True)
+result_df_edades['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+result_query_edades = result_df_edades[result_df_edades.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
+result_query_edades['POBLACION']=poblacion_por_grupo_etario
+result_query_edades['%']=round(result_query_edades['DOSIS']/result_query_edades['POBLACION']*100,2)
+result_query_edades
+
 col_poblacion_m=[219801,
 594832,
 220370,
@@ -97,3 +108,4 @@ result_query_dosis.to_csv('resultados/dosis1y2.csv')
 result_query_acumulados.to_csv('resultados/acumulados1y2.csv')
 result_query_departamentos.to_csv('resultados/departamentos.csv')
 result_query_departamentos_sexo.to_csv('resultados/departamentos_sexo.csv')
+result_query_edades.to_csv('resultados/dosis2_por_edades.csv')
