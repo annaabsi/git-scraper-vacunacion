@@ -45,15 +45,13 @@ col_poblacion=[426806,
 589110]
 
 # ACUMULADO POR DEPARTAMENTO (DOSIS 2 - VACUNACION COMPLETA)
-df_ambas_dosis_departamento=df[['DEPARTAMENTO', 'SEXO']].groupby(['DEPARTAMENTO']).count()
+df_ambas_dosis_departamento=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
 df_ambas_dosis_departamento=df_ambas_dosis_departamento.reset_index()
-df_ambas_dosis_departamento.rename(columns = {'SEXO':'DOSIS2'}, inplace = True)
-df_ambas_dosis_departamento_dosis2=df_ambas_dosis_departamento[['DEPARTAMENTO','DOSIS2']]
-df_ambas_dosis_departamento_dosis2=df_ambas_dosis_departamento_dosis2.reset_index(drop=True)
-df_ambas_dosis_departamento_dosis2['POBLACION']=col_poblacion
-df_ambas_dosis_departamento_dosis2['INDICE']=round(df_ambas_dosis_departamento_dosis2['DOSIS2']/(df_ambas_dosis_departamento_dosis2['POBLACION']/100000)).astype('int')
-df_ambas_dosis_departamento_dosis2=df_ambas_dosis_departamento_dosis2.set_index('DEPARTAMENTO')
-df_ambas_dosis_departamento_dosis2
+df_ambas_dosis_departamento=df_ambas_dosis_departamento.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
+df_ambas_dosis_departamento.columns=['DOSIS1','DOSIS2']
+df_ambas_dosis_departamento['POBLACION']=col_poblacion
+df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS2']/(df_ambas_dosis_departamento['POBLACION']/100000)).astype('int')
+df_ambas_dosis_departamento
 
 # ACUMULADO POR GRUPO ETARIO (DOSIS 2 - VACUNACION COMPLETA)
 bins = [18,20,30,40,50,60,70,80,df['EDAD'].max()+1]
@@ -70,5 +68,5 @@ df_edades
 
 df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
 df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
-df_ambas_dosis_departamento_dosis2.to_csv('resultados/departamentos.csv')
+df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
 df_edades.to_csv('resultados/dosis2_por_edades.csv')
