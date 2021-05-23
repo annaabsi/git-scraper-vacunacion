@@ -87,7 +87,3 @@ if __name__ == "__main__":
 
     with open("resultados/ambas_dosis.json", "w") as outfile:
         json.dump(dosis_dict, outfile)
-
-    text_file = open("resultados/last_run.txt", "w")
-    n = text_file.write(str(datetime.datetime.now()))
-    text_file.close()

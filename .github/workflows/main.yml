@@ -28,10 +28,11 @@ jobs:
 
       - name: commit my files
         run: |
+          git pull
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "update datad daily" -a
+          git commit --allow-empty -m "update datad daily" -a
 
       - name: push my changes
         uses: ad-m/github-push-action@v0.6.0
@@ -63,10 +64,11 @@ jobs:
 
       - name: commit my files
         run: |
+          git pull
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit -m "update datad daily" -a
+          git commit --allow-empty -m "update datad daily" -a
 
       - name: push my changes
         uses: ad-m/github-push-action@v0.6.0
