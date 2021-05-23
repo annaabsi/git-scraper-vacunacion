@@ -3,7 +3,7 @@ import pandas as pd
 df=pd.read_csv('https://cloud.minsa.gob.pe/s/ZgXoXqK2KLjRLxD/download', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'],parse_dates=['FECHA_VACUNACION'])
 #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'], parse_dates=['FECHA_VACUNACION'])
 fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
-fecha_corte.to_json("/resultados/fecha_corte.json")
+fecha_corte.to_json("resultados/fecha_corte.json")
 
 #DIARIO DOSIS 1 Y DOSIS 2
 df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
