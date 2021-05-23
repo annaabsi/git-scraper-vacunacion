@@ -9,8 +9,6 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 
-from datetime import datetime
-
 def scraper(PUBLIC_TABLEAU_VIEW,
             TIME_SECONDS_TO_WAIT_UNTIL_DASHBOARD_LOAD,
             SCREENSHOT_FILENAME):
@@ -82,7 +80,6 @@ if __name__ == "__main__":
     dosis_dict = {}
     dosis_dict['dosis1'] = dosis1_number
     dosis_dict['dosis2'] = dosis2_number
-    dosis_dict['actualizado'] = datetime.today().strftime('%Y%m%d')
 
     print(dosis_dict)
 
