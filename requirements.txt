@@ -1,7 +1,4 @@
 pandas
-pandasql
-streamlit
-plotly
 pytesseract
 opencv-contrib-python-headless==4.4.0.46
 selenium
