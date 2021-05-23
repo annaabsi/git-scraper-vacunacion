@@ -4,3 +4,7 @@ vacunas_covid.csv
 fallecidos_sinadef.csv
 
 google.deb
+
+*.ipynb_checkpoints*
+
+notebooks/.ipynb_checkpoints
