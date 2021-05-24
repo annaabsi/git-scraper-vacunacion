@@ -1,6 +1,13 @@
 import pandas as pd
+import requests
+from io import StringIO
 
-df=pd.read_csv('https://cloud.minsa.gob.pe/s/ZgXoXqK2KLjRLxD/download', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'],parse_dates=['FECHA_VACUNACION'])
+url = "https://cloud.minsa.gob.pe/s/ZgXoXqK2KLjRLxD/download"
+headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
+req = requests.get(url, headers=headers)
+data = StringIO(req.text)
+
+df=pd.read_csv(data, usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'],parse_dates=['FECHA_VACUNACION'])
 #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'], parse_dates=['FECHA_VACUNACION'])
 fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
 fecha_corte.to_json("resultados/fecha_corte.json")
