@@ -1,5 +1,4 @@
 requests
-io
 pandas
 pytesseract
 opencv-contrib-python-headless==4.4.0.46
