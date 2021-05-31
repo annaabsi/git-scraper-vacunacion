@@ -7,8 +7,8 @@ headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0)
 req = requests.get(url, headers=headers)
 data = StringIO(req.text)
 
-df=pd.read_csv(data, usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'],parse_dates=['FECHA_VACUNACION'])
-#df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO'], parse_dates=['FECHA_VACUNACION'])
+df=pd.read_csv(data, usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
+#df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
 fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
 fecha_corte.to_json("resultados/fecha_corte.json")
 
@@ -73,7 +73,21 @@ df_edades['PORCENTAJE']=round(df_edades['DOSIS2']/df_edades['POBLACION']*100,2)
 df_edades=df_edades.set_index('GRUPO_ETARIO')
 df_edades
 
+#DIARIO POR FABRICANTE
+df_fabricante=df[['FECHA_VACUNACION','FABRICANTE','SEXO']].groupby(['FECHA_VACUNACION','FABRICANTE']).count()
+df_fabricante=df_fabricante.reset_index()
+df_fabricante=df_fabricante.pivot(index='FECHA_VACUNACION', columns='FABRICANTE', values='SEXO')
+df_fabricante=df_fabricante.rename_axis(None, axis=1)
+df_fabricante=df_fabricante.fillna(0).astype('int')
+df_fabricante
+
+#ACUMULADO POR FABRICANTE
+df_fabricante_cum=df_fabricante.cumsum()
+df_fabricante_cum
+
 df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
 df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
 df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
 df_edades.to_csv('resultados/dosis2_por_edades.csv')
+df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
+df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
