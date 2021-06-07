@@ -61,7 +61,7 @@ df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS2'
 df_ambas_dosis_departamento
 
 # ACUMULADO POR GRUPO ETARIO (DOSIS 2 - VACUNACION COMPLETA)
-bins = [18,20,30,40,50,60,70,80,df['EDAD'].max()+1]
+bins = [18,30,40,50,60,70,80,df['EDAD'].max()+1]
 labels = ['18 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 69 años','70 a 79 años','80 años a más']
 poblacion_por_grupo_etario = [6303670,5031117,4183174,3277134,2221241,1271842,647355] 
 df_edades = df
