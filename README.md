@@ -23,7 +23,7 @@
 Automatizado con [Github Actions](.github/workflows/main.yml)
 
 Instalación
-```
+```bash
 # Instala requerimientos de Python
 pip3 install -r requirements.txt
 # Instala dependencias de scraper de Tableau
@@ -31,7 +31,7 @@ bash setup_scraper-tableau.bash
 ```
 
 Obtener resultados
-```
+```bash
 # Obtener tablas resumen de datos abiertos
 python3 scraper.py
 # Obtener cifras de dashboards externos
