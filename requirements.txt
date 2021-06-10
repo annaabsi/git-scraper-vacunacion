@@ -1,8 +1,10 @@
 requests
-urllib
+#urllib already on python3
 numpy
 pandas
-zipfile
+#zipfile already on python3
 pytesseract
 opencv-contrib-python-headless==4.4.0.46
 selenium
+xlrd # excel files
+openpyxl # excel files
