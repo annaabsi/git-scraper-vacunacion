@@ -3,6 +3,7 @@ import pandas as pd
 import zipfile
 from urllib.request import urlopen, Request
 import io
+from datetime import date, timedelta
 
 req = Request('https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download')
 req.add_header('User-Agent', 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:77.0) Gecko/20100101 Firefox/77.0')
@@ -31,8 +32,9 @@ xls['FECHA'].dropna()
 xls['EDAD'].dropna()
 
 start_date = "2019-01-01"
-
-after_start_date = xls["FECHA"] >= start_date
+yesterday = date.today() - timedelta(days=1)
+end_date = yesterday.strftime("%Y-%m-%d")
+after_start_date = (xls["FECHA"] >= start_date) & (xls["FECHA"] < end_date)
 filtered_dates = xls.loc[after_start_date]
 
 xls_edad_anos = filtered_dates[filtered_dates['TIEMPO EDAD']=='AÑOS']
