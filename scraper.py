@@ -91,3 +91,14 @@ df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
 df_edades.to_csv('resultados/dosis2_por_edades.csv')
 df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
 df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
+
+#DATA PONGO EL HOMBRO
+from requests_html import HTMLSession
+session = HTMLSession()
+r = session.get('https://www.gob.pe/pongoelhombro#contador-de-vacunados')
+scrap_contador_vacunados = r.html.find('.font-bold.text-3xl')
+d = []
+for number in scrap_contador_vacunados:
+    d.append(number.text)
+contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
+contador_vacunados.to_json('resultados/pongo_el_hombro.json')
