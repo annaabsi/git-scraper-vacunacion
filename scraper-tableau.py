@@ -69,19 +69,24 @@ if __name__ == "__main__":
             SCREENSHOT_FILENAME='dosis2-'+SS)
     dosis2_text = img2text(SCREENSHOT_FILENAME='dosis2-'+SS)
 
-    dosis1_number = int(dosis1_text.replace(' ', '').replace(',', ''))
-    dosis2_number = int(dosis2_text.replace(' ', '').replace(',', ''))
-    print(dosis1_number)
-    print(dosis2_number)
+    try:
 
-    ################
-    # SAVING TO JSON
-    ################
-    dosis_dict = {}
-    dosis_dict['dosis1'] = dosis1_number
-    dosis_dict['dosis2'] = dosis2_number
+        dosis1_number = int(dosis1_text.replace(' ', '').replace(',', ''))
+        dosis2_number = int(dosis2_text.replace(' ', '').replace(',', ''))
+        print(dosis1_number)
+        print(dosis2_number)
 
-    print(dosis_dict)
+        ################
+        # SAVING TO JSON
+        ################
+        dosis_dict = {}
+        dosis_dict['dosis1'] = dosis1_number
+        dosis_dict['dosis2'] = dosis2_number
 
-    with open("resultados/ambas_dosis.json", "w") as outfile:
-        json.dump(dosis_dict, outfile)
+        print(dosis_dict)
+
+        with open("resultados/ambas_dosis.json", "w") as outfile:
+            json.dump(dosis_dict, outfile)
+
+    except Exception as e:
+        print(e)

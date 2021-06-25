@@ -32,7 +32,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit --allow-empty -m "update datad daily vacunacion" -a
+          git commit --allow-empty -m "update data daily vacunacion" -a
 
       - name: push my changes
         uses: ad-m/github-push-action@v0.6.0
@@ -68,7 +68,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit --allow-empty -m "update datad daily vacunas CMP" -a
+          git commit --allow-empty -m "update data daily vacunas CMP" -a
 
       - name: push my changes
         uses: ad-m/github-push-action@v0.6.0
@@ -100,7 +100,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add -A
-          git commit --allow-empty -m "update datad daily fallecidos" -a
+          git commit --allow-empty -m "update data daily fallecidos" -a
 
       - name: push my changes
         uses: ad-m/github-push-action@v0.6.0
