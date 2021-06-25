@@ -104,5 +104,6 @@ try:
     contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
     contador_vacunados.to_json('resultados/pongo_el_hombro.json')
 
-except Exception as e:
-    print(e)
+except ConnectionResetError:
+    # error de peers
+    pass

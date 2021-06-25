@@ -88,5 +88,6 @@ if __name__ == "__main__":
         with open("resultados/ambas_dosis.json", "w") as outfile:
             json.dump(dosis_dict, outfile)
 
-    except Exception as e:
-        print(e)
+    except ValueError:
+        # si es el error de int, seguir
+        pass
