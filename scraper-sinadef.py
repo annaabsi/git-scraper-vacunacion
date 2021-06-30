@@ -62,5 +62,9 @@ try:
     # df
 
     df.to_csv('resultados/fallecidos_edad.csv', index=False)
+
+    _, _ = _execute_shell_command(['rm','-rf', './DATA_SINADEF/'])
+    _, _ = _execute_shell_command(['rm','-f', 'minsa.zip'])
+    
 except ConnectionResetError:
     pass
