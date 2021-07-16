@@ -1,7 +1,7 @@
 requests
 #urllib already on python3
 numpy
-pandas
+pandas==1.2.5
 #zipfile already on python3
 pytesseract
 opencv-contrib-python-headless==4.4.0.46
