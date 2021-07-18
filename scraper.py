@@ -9,6 +9,7 @@ try:
     data = StringIO(req.text)
 
     df=pd.read_csv(data, usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
+    print(df.head(10))
     #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
     fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
     fecha_corte.to_json("resultados/fecha_corte.json")
