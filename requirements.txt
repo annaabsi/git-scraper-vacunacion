@@ -9,3 +9,4 @@ selenium
 xlrd # excel files
 openpyxl # excel files
 requests_html
+py7zr

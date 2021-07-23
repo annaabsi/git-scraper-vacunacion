@@ -1,14 +1,19 @@
 import pandas as pd
 import requests
-from io import StringIO
+import py7zr
 
 try:
-    url = "https://cloud.minsa.gob.pe/s/ZgXoXqK2KLjRLxD/download"
+    url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
     headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
     req = requests.get(url, headers=headers)
-    data = StringIO(req.text)
 
-    df=pd.read_csv(data, usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
+    with open('vacunas_covid.7z', 'wb') as f:
+        f.write(req.content)
+    
+    with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
+        z.extractall()
+
+    df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
     print(df.head(10))
     #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
     fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
