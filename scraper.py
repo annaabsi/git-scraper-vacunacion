@@ -92,13 +92,6 @@ try:
     df_fabricante_cum=df_fabricante.cumsum()
     df_fabricante_cum
 
-    df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
-    df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
-    df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
-    df_edades.to_csv('resultados/dosis2_por_edades.csv')
-    df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
-    df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
-
     #DATA PONGO EL HOMBRO
     from requests_html import HTMLSession
     session = HTMLSession()
@@ -109,6 +102,24 @@ try:
         d.append(number.text)
     contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
     contador_vacunados.to_json('resultados/pongo_el_hombro.json')
+
+    #DIARIO DOSIS 1 Y DOSIS 2: TACNA
+    df_tacna=df[df['DEPARTAMENTO'] == 'TACNA']
+    df_diario_tacna=df_tacna[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
+    df_diario_tacna=df_diario_tacna.reset_index()
+    df_diario_tacna=df_diario_tacna.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
+    df_diario_tacna=df_diario_tacna.rename_axis(None, axis=1)
+    df_diario_tacna.columns=['DOSIS1','DOSIS2']
+    df_diario_tacna=df_diario_tacna.fillna(0).astype('int')
+    df_diario_tacna
+
+    df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
+    df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
+    df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
+    df_edades.to_csv('resultados/dosis2_por_edades.csv')
+    df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
+    df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
+    df_diario_tacna.to_csv('resultados/tacna.csv')
 
 except ConnectionResetError:
     # error de peers
