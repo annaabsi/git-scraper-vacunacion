@@ -10,3 +10,4 @@ xlrd # excel files
 openpyxl # excel files
 requests_html
 py7zr
+py_essentials # hash
