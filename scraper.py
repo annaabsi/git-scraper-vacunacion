@@ -125,6 +125,16 @@ try:
         df_diario_tacna=df_diario_tacna.fillna(0).astype('int')
         df_diario_tacna
 
+        # ACUMULADO DE 11 A 16 AÑOS
+        bins = [11,12,13,14,15,16,17]
+        labels = ['11 años','12 años','13 años','14 años','15 años','16 años'] 
+        df_11_16 = df
+        df_11_16['EDAD'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+        df_11_16 = df_11_16[df_11_16.DOSIS == 2].groupby(['EDAD'])["DOSIS"].count().reset_index()
+        df_11_16.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        df_11_16=df_11_16.set_index('EDAD')
+        df_11_16
+
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
@@ -132,6 +142,7 @@ try:
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
         df_diario_tacna.to_csv('resultados/tacna.csv')
+        df_11_16.to_csv('resultados/11_a_16_anios.csv')
 
         # Save new hash
         file = open('resultados/hashes/hash_scraper.txt', 'w')
