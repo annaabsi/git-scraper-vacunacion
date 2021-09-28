@@ -31,7 +31,7 @@ try:
         fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
         fecha_corte.to_json("resultados/fecha_corte.json")
 
-        #DIARIO DOSIS 1 Y DOSIS 2
+        # DIARIO DOSIS 1 Y DOSIS 2
         df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
         df_ambas_dosis=df_ambas_dosis.reset_index()
         df_ambas_dosis=df_ambas_dosis.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
@@ -40,7 +40,7 @@ try:
         df_ambas_dosis=df_ambas_dosis.fillna(0).astype('int')
         df_ambas_dosis
 
-        #ACUMULADO DOSIS 1 Y DOSIS 2
+        # ACUMULADO DOSIS 1 Y DOSIS 2
         df_ambas_dosis_cum=df_ambas_dosis.cumsum()
         df_ambas_dosis_cum
 
@@ -92,7 +92,7 @@ try:
         df_edades=df_edades.set_index('GRUPO_ETARIO')
         df_edades
 
-        #DIARIO POR FABRICANTE
+        # DIARIO POR FABRICANTE
         df_fabricante=df[['FECHA_VACUNACION','FABRICANTE','SEXO']].groupby(['FECHA_VACUNACION','FABRICANTE']).count()
         df_fabricante=df_fabricante.reset_index()
         df_fabricante=df_fabricante.pivot(index='FECHA_VACUNACION', columns='FABRICANTE', values='SEXO')
@@ -100,11 +100,11 @@ try:
         df_fabricante=df_fabricante.fillna(0).astype('int')
         df_fabricante
 
-        #ACUMULADO POR FABRICANTE
+        # ACUMULADO POR FABRICANTE
         df_fabricante_cum=df_fabricante.cumsum()
         df_fabricante_cum
 
-        #DATA PONGO EL HOMBRO
+        # DATA PONGO EL HOMBRO
         from requests_html import HTMLSession
         session = HTMLSession()
         r = session.get('https://www.gob.pe/pongoelhombro#contador-de-vacunados')
@@ -115,7 +115,7 @@ try:
         contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
         contador_vacunados.to_json('resultados/pongo_el_hombro.json')
 
-        #DIARIO DOSIS 1 Y DOSIS 2: TACNA
+        # DIARIO DOSIS 1 Y DOSIS 2: TACNA
         df_tacna=df[df['DEPARTAMENTO'] == 'TACNA']
         df_diario_tacna=df_tacna[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
         df_diario_tacna=df_diario_tacna.reset_index()
@@ -125,15 +125,24 @@ try:
         df_diario_tacna=df_diario_tacna.fillna(0).astype('int')
         df_diario_tacna
 
-        # ACUMULADO DE 11 A 16 AÑOS
+        # TOTAL DE 11 A 16 AÑOS
         bins = [11,12,13,14,15,16,17]
         labels = ['11 años','12 años','13 años','14 años','15 años','16 años'] 
         df_11_16 = df
-        df_11_16['EDAD'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
-        df_11_16 = df_11_16[df_11_16.DOSIS == 2].groupby(['EDAD'])["DOSIS"].count().reset_index()
+        df_11_16['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+        df_11_16 = df_11_16[df_11_16.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
         df_11_16.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
-        df_11_16=df_11_16.set_index('EDAD')
+        df_11_16=df_11_16.set_index('GRUPO_ETARIO')
         df_11_16
+
+        # ACUMULADO DE 11 A 16 AÑOS
+        df_11_16_diario = df
+        df_11_16_diario = df[df['EDAD'].isin([11,12,13,14,15,16])]
+        df_11_16_diario = df_11_16_diario[df_11_16_diario.DOSIS == 2].groupby(['FECHA_VACUNACION'])["DOSIS"].count().reset_index()
+        df_11_16_diario = df_11_16_diario.set_index('FECHA_VACUNACION')
+        df_11_16_diario.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        df_11_16_diario_cum = df_11_16_diario.cumsum()
+        df_11_16_diario_cum
 
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
@@ -143,6 +152,7 @@ try:
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
         df_diario_tacna.to_csv('resultados/tacna.csv')
         df_11_16.to_csv('resultados/11_a_16_anios.csv')
+        df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
 
         # Save new hash
         file = open('resultados/hashes/hash_scraper.txt', 'w')
