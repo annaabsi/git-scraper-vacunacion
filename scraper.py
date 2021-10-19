@@ -122,7 +122,7 @@ try:
         df_diario_tacna=df_diario_tacna.reset_index()
         df_diario_tacna=df_diario_tacna.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
         df_diario_tacna=df_diario_tacna.rename_axis(None, axis=1)
-        df_diario_tacna.columns=['DOSIS1','DOSIS2']
+        df_diario_tacna.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_diario_tacna=df_diario_tacna.fillna(0).astype('int')
         df_diario_tacna
 
