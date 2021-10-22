@@ -116,7 +116,7 @@ try:
         contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
         contador_vacunados.to_json('resultados/pongo_el_hombro.json')
 
-        # DIARIO DOSIS 1 Y DOSIS 2: TACNA
+        # DIARIO TACNA
         df_tacna=df[df['DEPARTAMENTO'] == 'TACNA']
         df_diario_tacna=df_tacna[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
         df_diario_tacna=df_diario_tacna.reset_index()
@@ -125,6 +125,26 @@ try:
         df_diario_tacna.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_diario_tacna=df_diario_tacna.fillna(0).astype('int')
         df_diario_tacna
+
+        #DIARIO PUNO
+        df_puno=df[df['DEPARTAMENTO'] == 'PUNO']
+        df_diario_puno=df_tacna[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
+        df_diario_puno=df_diario_puno.reset_index()
+        df_diario_puno=df_diario_puno.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
+        df_diario_puno=df_diario_puno.rename_axis(None, axis=1)
+        df_diario_puno.columns=['DOSIS1','DOSIS2','DOSIS3']
+        df_diario_puno=df_diario_puno.fillna(0).astype('int')
+        df_diario_puno
+
+        # DIARIO MADRE DE DIOS
+        df_mdd=df[df['DEPARTAMENTO'] == 'MADRE DE DIOS']
+        df_diario_mdd=df_mdd[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
+        df_diario_mdd=df_diario_mdd.reset_index()
+        df_diario_mdd=df_diario_mdd.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
+        df_diario_mdd=df_diario_mdd.rename_axis(None, axis=1)
+        df_diario_mdd.columns=['DOSIS1','DOSIS2','DOSIS3']
+        df_diario_mdd=df_diario_mdd.fillna(0).astype('int')
+        df_diario_mdd
 
         # TOTAL DE 11 A 16 AÑOS
         bins = [11,12,13,14,15,16,17]
@@ -152,6 +172,8 @@ try:
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
         df_diario_tacna.to_csv('resultados/tacna.csv')
+        df_diario_puno.to_csv('resultados/puno.csv')
+        df_diario_mdd.to_csv('resultados/madre_de_dios.csv')
         df_11_16.to_csv('resultados/11_a_16_anios.csv')
         df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
 
