@@ -15,10 +15,13 @@ def _execute_shell_command(command):
         return stdout, stderr
 
 try:
-    _, _ = _execute_shell_command(['wget', 'https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download'])
+    _, _ = _execute_shell_command(['wget',' -O ','-',' https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download',' |' ,'tee', 'download' ,'|' ,'md5sum','>',' ./resultados/hashes/hash_sinadef_downloaded.txt'])
 
+    # hash_downloaded = hs.fileChecksum("download", "sha256")
 
-    hash_downloaded = hs.fileChecksum("download", "sha256")    
+    # Get hash hash_sinadef_downloaded
+    with open('resultados/hashes/hash_sinadef_downloaded.txt') as f:
+        hash_downloaded = f.readlines()[0]
 
     # Get hash saved
     with open('resultados/hashes/hash_sinadef.txt') as f:
