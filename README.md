@@ -44,11 +44,13 @@ python3 scraper-tableau.py
 
 El programa consta de dos scripts separados: 
 - scraper: obtiene [datos de "Datos Abiertos Perú"](https://www.datosabiertos.gob.pe/dataset/vacunaci%C3%B3n-contra-covid-19-ministerio-de-salud-minsa) sobre Vacunación contra COVID-19 - MINSA.
-- scraper-tableau: obtiene [datos del CMP](https://www.cmp.org.pe/vacunometro-cmp/) sobre médicos vacunados.
+- scraper-tableau: obtiene [datos del CMP](https://www.cmp.org.pe/vacunometro-cmp/) sobre médicos vacunados. (desactivado)
+- scraper-sinadef: obtiene [datos de SINADEF](https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download) sobre Fallecidos por COVID-19.
+- scraper-uci: obtiene [datos de SUSALUD](http://datos.susalud.gob.pe/sites/default/files/Camas_26-10-2021.csv) sobre Disponibilidad de Camas UCI para pacientes COVID-19.
 
 ### *scraper.py*
 
-Genera 3 distintas tablas de salida con sus respetivas columnas que se encuentran dentro de la carpeta [resultados/](resultados/)
+Genera distintas tablas de salida con sus respetivas columnas que se encuentran dentro de la carpeta [resultados/](resultados/)
 
 1. [departamentos.csv](resultados/departamentos.csv): DEPARTAMENTO,DOSIS1,DOSIS2,POBLACION,INDICE
 2. [dosis1y2.csv](resultados/dosis1y2.csv): FECHA_VACUNACION,DOSIS1,DOSIS2
