@@ -15,7 +15,9 @@ def _execute_shell_command(command):
         return stdout, stderr
 
 try:
-    _, _ = _execute_shell_command(['wget',' -O ','-',' https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download',' |' ,'tee', 'download' ,'|' ,'md5sum','>',' ./resultados/hashes/hash_sinadef_downloaded.txt'])
+    _, _ = _execute_shell_command(['wget', '-O', 'DATA_SINADEF.zip', 'https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download'])
+    _, _ = _execute_shell_command(['md5sum', 'DATA_SINADEF.zip', '>', './resultados/hashes/hash_sinadef_downloaded.txt'])
+
 
     # hash_downloaded = hs.fileChecksum("download", "sha256")
 
@@ -35,7 +37,7 @@ try:
     else:
         print("DIFFERENT FILE")
 
-        _, _ = _execute_shell_command(['unzip', 'download'])
+        _, _ = _execute_shell_command(['unzip', 'DATA_SINADEF.zip'])
 
         xls = pd.read_excel('./DATA_SINADEF/SINADEF_DATOS_ABIERTOS.xlsx',engine='openpyxl', index_col=0)  # <-- add .read()
         # xls
