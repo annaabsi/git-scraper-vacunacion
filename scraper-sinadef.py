@@ -32,7 +32,7 @@ try:
     print(hash_downloaded)
     print(hash_saved)
 
-    if hash_saved==hash_downloaded:
+    if hash_saved!=hash_downloaded:
         print("SAME FILE")
     else:
         print("DIFFERENT FILE")
