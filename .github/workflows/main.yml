@@ -54,7 +54,7 @@ jobs:
 
       - name: execute my python script
         run: |
-          wget -O data.csv 170.79.38.202/node/548/download
+          wget -O data.csv http://datos.susalud.gob.pe/sites/default/files/Camas_08-11-2021.csv
           ls -la
           cat wget-log
           ls -la
