@@ -55,7 +55,7 @@ jobs:
       - name: execute my python script
         run: |
           rm wget-*
-          wget -O data.csv --no-check-certificate http://datos.susalud.gob.pe/node/548/download
+          wget -O data.csv http://datos.susalud.gob.pe/node/548/download
           ls -la
           cat wget-log
           ls -la
