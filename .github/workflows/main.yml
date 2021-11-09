@@ -54,7 +54,7 @@ jobs:
 
       - name: execute my python script
         run: |
-          wget --no-check-certificate --content-disposition http://datos.susalud.gob.pe/api/action/datastore/search.json?resource_id=187105ef-d71b-44e0-a5af-4762c33cefb3&limit=5 -O camas_uci.json
+          wget --no-check-certificate http://datos.susalud.gob.pe/api/action/datastore/search.json?resource_id=187105ef-d71b-44e0-a5af-4762c33cefb3&limit=5 -O camas_uci.json
           ls -la
 
       # python -m pip install --upgrade pip
