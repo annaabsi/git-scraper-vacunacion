@@ -54,7 +54,7 @@ jobs:
 
       - name: execute my python script
         run: |
-          wget http://datos.susalud.gob.pe/node/548/download -O camas_uci.csv
+          wget --no-check-certificate --content-disposition http://datos.susalud.gob.pe/node/548/download -O camas_uci.csv
           ls -la
 
       # python -m pip install --upgrade pip
