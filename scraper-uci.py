@@ -3,7 +3,7 @@ import requests
 
 try:
     url = "http://datos.susalud.gob.pe/node/548/download"
-    req = requests.get(url, timeout=190)
+    req = requests.get(url)
 
     with open('camas_uci.csv', 'wb') as f:
         f.write(req.content)
