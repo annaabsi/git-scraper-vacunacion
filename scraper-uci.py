@@ -3,11 +3,18 @@ import requests
 
 try:
     url = "http://datos.susalud.gob.pe/node/548/download"
-    req = requests.get(url)
+    # https://proxy-spider.com/proxies/locations/pe-peru
+    http_proxy  = "http://190.108.95.204:999"
+    https_proxy = "https://190.108.95.204:999"
+    proxyDict = {
+        "http": http_proxy,
+        "https": https_proxy,
+    }
+    req = requests.get(url,proxies=proxyDict)
 
     with open('camas_uci.csv', 'wb') as f:
         f.write(req.content)
-    
+
     df=pd.read_csv('camas_uci.csv', usecols=['FECHACORTE', 'REGION', 'ZC_UCI_ADUL_CAM_TOTAL','ZC_UCI_ADUL_CAM_INOPERATIVOS', 'ZC_UCI_ADUL_CAM_TOT_OPER', 'ZC_UCI_ADUL_CAM_TOT_DISP', 'ZC_UCI_ADUL_CAM_TOT_OCUP'], sep='|')
     fecha_corte = df['FECHACORTE'].tail(1)
 
