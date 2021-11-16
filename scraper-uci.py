@@ -10,7 +10,9 @@ try:
         "http": http_proxy,
         "https": https_proxy,
     }
-    req = requests.get(url,proxies=proxyDict)
+    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
+
+    req = requests.get(url,proxies=proxyDict,headers=headers)
 
     with open('camas_uci.csv', 'wb') as f:
         f.write(req.content)
