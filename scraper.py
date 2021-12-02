@@ -37,7 +37,7 @@ try:
         with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
             z.extractall()
 
-        df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
+        df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO', 'FABRICANTE'],parse_dates=['FECHA_VACUNACION'])
         print(df.head(10))
         #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
         fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
@@ -160,6 +160,50 @@ try:
             df_filtered=summary_by_department(df_by_department)
             df_filtered.to_csv(f"resultados/departamentos/{department_name.lower()}.csv")
 
+        # PROVINCIAS CRITICAS
+        list_provincias_criticas = [
+            "ATALAYA",
+            "CARABAYA",
+            "CHUCUITO",
+            "CONDORCANQUI",
+            "DATEM DEL MARAÑON",
+            "MARISCAL RAMON CASTILLA",
+            "MOHO",
+            "PACHITEA",
+            "PADRE ABAD",
+            "PUERTO INCA",
+            "PURUS",
+            "PUTUMAYO",
+            "SAN ANTONIO DE PUTINA",
+            "SANDIA",
+            "UCAYALI"]
+        list_provincias_poblacion = [
+            50228,
+            55528,
+            69158,
+            52246,
+            56533,
+            61337,
+            23923,
+            50022,
+            62275,
+            33797,
+            3793,
+            8629,
+            26520,
+            49202,
+            58367,
+        ]
+        df_ambas_dosis_provincia=df[df['PROVINCIA'].isin(list_provincias_criticas)]
+        df_ambas_dosis_provincia=df_ambas_dosis_provincia[['PROVINCIA','DOSIS','SEXO']].groupby(['PROVINCIA', 'DOSIS']).count()
+        df_ambas_dosis_provincia=df_ambas_dosis_provincia.reset_index()
+        df_ambas_dosis_provincia=df_ambas_dosis_provincia.pivot(index='PROVINCIA', columns='DOSIS', values='SEXO')
+        df_ambas_dosis_provincia.columns=['DOSIS1','DOSIS2','DOSIS3']
+        df_ambas_dosis_provincia['POBLACION']=list_provincias_poblacion
+        df_ambas_dosis_provincia['INDICE']=round(df_ambas_dosis_provincia['DOSIS2']/df_ambas_dosis_provincia['POBLACION']*100,2)
+        df_ambas_dosis_provincia=df_ambas_dosis_provincia.fillna(0)
+        df_ambas_dosis_provincia
+        
         # TOTAL DE 11 A 16 AÑOS
         bins = [11,12,13,14,15,16,17]
         labels = ['11 años','12 años','13 años','14 años','15 años','16 años'] 
@@ -182,11 +226,10 @@ try:
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
+        df_ambas_dosis_provincia.to_csv('resultados/provincias_criticas.csv')
         df_edades.to_csv('resultados/dosis2_por_edades.csv')
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
-
-
 
         df_11_16.to_csv('resultados/11_a_16_anios.csv')
         df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
