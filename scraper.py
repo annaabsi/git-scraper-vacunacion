@@ -8,6 +8,7 @@ def summary_by_department(df):
 
     df=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
     df=df.reset_index()
+    df=df[df['DOSIS'].isin([1,2,3])]
     df=df.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
     df=df.rename_axis(None, axis=1)
     df.columns=['DOSIS1','DOSIS2','DOSIS3']
@@ -46,9 +47,10 @@ try:
         # DIARIO DOSIS 1 Y DOSIS 2
         df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
         df_ambas_dosis=df_ambas_dosis.reset_index()
+        df_ambas_dosis=df_ambas_dosis[df_ambas_dosis['DOSIS'].isin([1,2,3])]
         df_ambas_dosis=df_ambas_dosis.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
         df_ambas_dosis=df_ambas_dosis.rename_axis(None, axis=1)
-        df_ambas_dosis.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4','DOSIS5']
+        df_ambas_dosis.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_ambas_dosis=df_ambas_dosis.fillna(0).astype('int')
         df_ambas_dosis
 
@@ -85,8 +87,9 @@ try:
         # ACUMULADO POR DEPARTAMENTO (DOSIS 2 - VACUNACION COMPLETA)
         df_ambas_dosis_departamento=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.reset_index()
+        df_ambas_dosis_departamento=df_ambas_dosis_departamento[df_ambas_dosis_departamento['DOSIS'].isin([1,2,3])]
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
-        df_ambas_dosis_departamento.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4','DOSIS5']
+        df_ambas_dosis_departamento.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_ambas_dosis_departamento['POBLACION']=col_poblacion
         df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS2']/(df_ambas_dosis_departamento['POBLACION']/100000)).astype('int')
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.fillna(0).astype('int')
