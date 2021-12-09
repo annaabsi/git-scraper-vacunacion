@@ -206,6 +206,44 @@ try:
         df_ambas_dosis_provincia['INDICE']=round(df_ambas_dosis_provincia['DOSIS2']/df_ambas_dosis_provincia['POBLACION']*100,2)
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.fillna(0)
         df_ambas_dosis_provincia
+
+        # DISTRITOS CRITICOS: AYACUCHO
+        list_distritos_ayacucho_criticos = [
+            'ACOCRO',
+            'ANCHIHUAY',
+            'CANAYRE',
+            'LLOCHEGUA',
+            'PUCACOLPA',
+            'SAMUGARI',
+            'SANTILLANA',
+            'TAMBILLO',
+            'UCHURACCAY',
+            'VINCHOS',
+            'CHUNGUI'
+        ]
+        list_distritos_ayacucho_poblacion = [
+            8204,
+            3493,
+            2314,
+            8227,
+            2343,
+            7421,
+            4523,
+            5487,
+            3122,
+            16108,
+            4441,
+        ]
+        df_ambas_dosis_ayacucho=df[df['DISTRITO'].isin(list_distritos_ayacucho_criticos)]
+        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho[['DISTRITO','DOSIS','SEXO']].groupby(['DISTRITO', 'DOSIS']).count()
+        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.reset_index()
+        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.pivot(index='DISTRITO', columns='DOSIS', values='SEXO')
+        df_ambas_dosis_ayacucho.columns=['DOSIS1','DOSIS2','DOSIS3']
+        df_ambas_dosis_ayacucho['POBLACION']=list_distritos_ayacucho_poblacion
+        df_ambas_dosis_ayacucho['INDICE']=round(df_ambas_dosis_ayacucho['DOSIS2']/df_ambas_dosis_ayacucho['POBLACION']*100,2)
+        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.fillna(0)
+        df_ambas_dosis_ayacucho
+        df_ambas_dosis_ayacucho.to_csv(f"resultados/distritos_por_departamento/ayacucho.csv")
         
         # TOTAL DE 11 A 16 AÑOS
         bins = [11,12,13,14,15,16,17]
