@@ -15,6 +15,14 @@ def summary_by_department(df):
     df=df.fillna(0).astype('int')
     return df
 
+def districts_by_department(df):
+
+    df=df[['DEPARTAMENTO','DISTRITO','DOSIS','SEXO']]
+    df=df[df.DOSIS == 2].groupby(['DEPARTAMENTO','DISTRITO', 'DOSIS']).count()
+    df.columns=['DOSIS2']
+    df = pd.merge(df, df_poblacion,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
+    df['INDICE']=round(df['DOSIS2']/df['POBLACION']*100,2)
+    return df
 
 try:
     url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
@@ -43,6 +51,7 @@ try:
         #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
         fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
         fecha_corte.to_json("resultados/fecha_corte.json")
+        df_poblacion=pd.read_csv('poblacion.csv')
 
         # DIARIO DOSIS 1 Y DOSIS 2
         df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
@@ -207,43 +216,16 @@ try:
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.fillna(0)
         df_ambas_dosis_provincia
 
-        # DISTRITOS CRITICOS: AYACUCHO
-        list_distritos_ayacucho_criticos = [
-            'ACOCRO',
-            'ANCHIHUAY',
-            'CANAYRE',
-            'LLOCHEGUA',
-            'PUCACOLPA',
-            'SAMUGARI',
-            'SANTILLANA',
-            'TAMBILLO',
-            'UCHURACCAY',
-            'VINCHOS',
-            'CHUNGUI'
-        ]
-        list_distritos_ayacucho_poblacion = [
-            8204,
-            3493,
-            2314,
-            8227,
-            2343,
-            7421,
-            4523,
-            5487,
-            3122,
-            16108,
-            4441,
-        ]
-        df_ambas_dosis_ayacucho=df[df['DISTRITO'].isin(list_distritos_ayacucho_criticos)]
-        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho[['DISTRITO','DOSIS','SEXO']].groupby(['DISTRITO', 'DOSIS']).count()
-        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.reset_index()
-        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.pivot(index='DISTRITO', columns='DOSIS', values='SEXO')
-        df_ambas_dosis_ayacucho.columns=['DOSIS1','DOSIS2','DOSIS3']
-        df_ambas_dosis_ayacucho['POBLACION']=list_distritos_ayacucho_poblacion
-        df_ambas_dosis_ayacucho['INDICE']=round(df_ambas_dosis_ayacucho['DOSIS2']/df_ambas_dosis_ayacucho['POBLACION']*100,2)
-        df_ambas_dosis_ayacucho=df_ambas_dosis_ayacucho.fillna(0)
-        df_ambas_dosis_ayacucho
-        df_ambas_dosis_ayacucho.to_csv(f"resultados/distritos_por_departamento/ayacucho.csv")
+        # DISTRITOS POR DEPARTAMENTOS CRITICOS
+        list_departamentos_criticos = ["AMAZONAS",
+                            "AYACUCHO",
+                            "HUANCAVELICA",
+                            "HUANUCO"]
+
+        for department_name in list_departamentos_criticos:
+            df_by_department=df[df['DEPARTAMENTO'] == department_name]
+            df_filtered=districts_by_department(df_by_department)
+            df_filtered.to_csv(f"resultados/distritos_por_departamento/{department_name.lower()}.csv")
         
         # TOTAL DE 11 A 16 AÑOS
         bins = [11,12,13,14,15,16,17]
