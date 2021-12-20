@@ -218,9 +218,16 @@ try:
 
         # DISTRITOS POR DEPARTAMENTOS CRITICOS
         list_departamentos_criticos = ["AMAZONAS",
-                            "AYACUCHO",
-                            "HUANCAVELICA",
-                            "HUANUCO"]
+                    "AYACUCHO",
+                    "HUANCAVELICA",
+                    "HUANUCO",
+                    "JUNIN",
+                    "LAMBAYEQUE",
+                    "LORETO",
+                    "MADRE DE DIOS",
+                    "PIURA",
+                    "PUNO",
+                    "UCAYALI"]
 
         for department_name in list_departamentos_criticos:
             df_by_department=df[df['DEPARTAMENTO'] == department_name]
