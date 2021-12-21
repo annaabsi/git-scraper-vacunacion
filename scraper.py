@@ -174,45 +174,12 @@ try:
             df_filtered.to_csv(f"resultados/departamentos/{department_name.lower()}.csv")
 
         # PROVINCIAS CRITICAS
-        list_provincias_criticas = [
-            "ATALAYA",
-            "CARABAYA",
-            "CHUCUITO",
-            "CONDORCANQUI",
-            "DATEM DEL MARAÑON",
-            "MARISCAL RAMON CASTILLA",
-            "MOHO",
-            "PACHITEA",
-            "PADRE ABAD",
-            "PUERTO INCA",
-            "PURUS",
-            "PUTUMAYO",
-            "SAN ANTONIO DE PUTINA",
-            "SANDIA",
-            "UCAYALI"]
-        list_provincias_poblacion = [
-            50228,
-            55528,
-            69158,
-            52246,
-            56533,
-            61337,
-            23923,
-            50022,
-            62275,
-            33797,
-            3793,
-            8629,
-            26520,
-            49202,
-            58367,
-        ]
-        df_ambas_dosis_provincia=df[df['PROVINCIA'].isin(list_provincias_criticas)]
-        df_ambas_dosis_provincia=df_ambas_dosis_provincia[['PROVINCIA','DOSIS','SEXO']].groupby(['PROVINCIA', 'DOSIS']).count()
+        df_ambas_dosis_provincia=df[['PROVINCIA','DOSIS','SEXO']].groupby(['PROVINCIA', 'DOSIS']).count()
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.reset_index()
+        df_ambas_dosis_provincia=df_ambas_dosis_provincia[df_ambas_dosis_provincia['DOSIS'].isin([1,2,3])]
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.pivot(index='PROVINCIA', columns='DOSIS', values='SEXO')
         df_ambas_dosis_provincia.columns=['DOSIS1','DOSIS2','DOSIS3']
-        df_ambas_dosis_provincia['POBLACION']=list_provincias_poblacion
+        df_ambas_dosis_provincia = pd.merge(df_ambas_dosis_provincia, df_poblacion_provincias,  how='inner', on=['PROVINCIA'])
         df_ambas_dosis_provincia['INDICE']=round(df_ambas_dosis_provincia['DOSIS2']/df_ambas_dosis_provincia['POBLACION']*100,2)
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.fillna(0)
         df_ambas_dosis_provincia
