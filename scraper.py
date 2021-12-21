@@ -20,7 +20,7 @@ def districts_by_department(df):
     df=df[['DEPARTAMENTO','DISTRITO','DOSIS','SEXO']]
     df=df[df.DOSIS == 2].groupby(['DEPARTAMENTO','DISTRITO', 'DOSIS']).count()
     df.columns=['DOSIS2']
-    df = pd.merge(df, df_poblacion,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
+    df = pd.merge(df, df_poblacion_distritos,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
     df['INDICE']=round(df['DOSIS2']/df['POBLACION']*100,2)
     return df
 
@@ -51,7 +51,8 @@ try:
         #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
         fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
         fecha_corte.to_json("resultados/fecha_corte.json")
-        df_poblacion=pd.read_csv('poblacion.csv')
+        df_poblacion_distritos=pd.read_csv('poblacion_distritos.csv')
+        df_poblacion_provincias=pd.read_csv('poblacion_provincias.csv')
 
         # DIARIO DOSIS 1 Y DOSIS 2
         df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
