@@ -138,7 +138,8 @@ try:
         # d = []
         # for number in scrap_contador_vacunados:
         #     d.append(number.text)
-        d = [df_ambas_dosis_cum['DOSIS1'][-1], df_ambas_dosis_cum['DOSIS2'][-1], df_ambas_dosis['DOSIS1'][-1], df_ambas_dosis['DOSIS2'][-1], df_ambas_dosis_cum.iloc[-1].sum(), df_ambas_dosis.iloc[-1].sum(), df_ambas_dosis_cum['DOSIS1'][-1] + df_ambas_dosis_cum['DOSIS2'][-1]]
+        d = [df_ambas_dosis_cum['DOSIS1'][-1], df_ambas_dosis_cum['DOSIS2'][-1], df_ambas_dosis['DOSIS1'][-1], df_ambas_dosis['DOSIS2'][-1], df_ambas_dosis_cum.iloc[-1].sum(), df_ambas_dosis.iloc[-1].sum(), df_ambas_dosis_cum['DOSIS2'][-1]]
+        d = list(map(str,d))
         contador_vacunados = pd.Series(d,index=['total_dosis1', 'total_dosis2','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
         contador_vacunados.to_json('resultados/pongo_el_hombro.json')
 
