@@ -3,9 +3,9 @@ requests
 numpy
 pandas==1.2.5
 #zipfile already on python3
-pytesseract
-opencv-contrib-python-headless==4.4.0.46
-selenium
+# pytesseract #deprecated
+# opencv-contrib-python-headless==4.4.0.46 #deprecated
+# selenium #deprecated
 xlrd # excel files
 openpyxl # excel files
 requests_html
