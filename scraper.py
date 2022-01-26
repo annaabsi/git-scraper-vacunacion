@@ -25,6 +25,13 @@ def districts_by_department(df):
     df['INDICE']=round(df['DOSIS2']/df['POBLACION']*100,2)
     return df
 
+# run bash script to download data
+def runCommand(command):
+    import subprocess
+    process = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
+    output, error = process.communicate()
+    return output
+
 if __name__ == '__main__':
     try:
         url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
@@ -39,7 +46,7 @@ if __name__ == '__main__':
         with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
             z.extractall()
 
-
+        runCommand('bash process.sh')
 
         # chunks = [] # List to keep filtered chunk dataframes.
 
