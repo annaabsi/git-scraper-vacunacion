@@ -1,13 +1,13 @@
 requests
 #urllib already on python3
 numpy
-pandas==1.2.5
+pandas
 #zipfile already on python3
 # pytesseract #deprecated
 # opencv-contrib-python-headless==4.4.0.46 #deprecated
 # selenium #deprecated
 xlrd # excel files
 openpyxl # excel files
-requests_html
+# requests_html
 py7zr
 py_essentials # hash

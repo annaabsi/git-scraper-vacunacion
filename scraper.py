@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import py7zr
 import requests
@@ -23,84 +24,67 @@ def districts_by_department(df):
     df = pd.merge(df, df_poblacion_distritos,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
     df['INDICE']=round(df['DOSIS2']/df['POBLACION']*100,2)
     return df
-def reduce_mem_usage(df):
-    start_mem = df.memory_usage().sum() / 1024**2
-    print('Memory usage of dataframe is {:.2f} MB'.format(start_mem))
 
-    for col in df.columns:
-        col_type = df[col].dtype
-    if col_type != object:
-            c_min = df[col].min()
-            c_max = df[col].max()
-            if str(col_type)[:3] == 'int':
-                if c_min > np.iinfo(np.int8).min and c_max < np.iinfo(np.int8).max:
-                    df[col] = df[col].astype(np.int8)
-                elif c_min > np.iinfo(np.uint8).min and c_max < np.iinfo(np.uint8).max:
-                    df[col] = df[col].astype(np.uint8)
-                elif c_min > np.iinfo(np.int16).min and c_max < np.iinfo(np.int16).max:
-                    df[col] = df[col].astype(np.int16)
-                elif c_min > np.iinfo(np.uint16).min and c_max < np.iinfo(np.uint16).max:
-                    df[col] = df[col].astype(np.uint16)
-                elif c_min > np.iinfo(np.int32).min and c_max < np.iinfo(np.int32).max:
-                    df[col] = df[col].astype(np.int32)
-                elif c_min > np.iinfo(np.uint32).min and c_max < np.iinfo(np.uint32).max:
-                    df[col] = df[col].astype(np.uint32)                    
-                elif c_min > np.iinfo(np.int64).min and c_max < np.iinfo(np.int64).max:
-                    df[col] = df[col].astype(np.int64)
-                elif c_min > np.iinfo(np.uint64).min and c_max < np.iinfo(np.uint64).max:
-                    df[col] = df[col].astype(np.uint64)
-            elif str(col_type)[:5] == 'float':
-                if c_min > np.finfo(np.float16).min and c_max < np.finfo(np.float16).max:
-                    df[col] = df[col].astype(np.float16)
-                elif c_min > np.finfo(np.float32).min and c_max < np.finfo(np.float32).max:
-                    df[col] = df[col].astype(np.float32)
-                else:
-                    df[col] = df[col].astype(np.float64)
+if __name__ == '__main__':
+    try:
+        url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
+        headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
+        req = requests.get(url, headers=headers)
+        print("Downloaded")
 
-    end_mem = df.memory_usage().sum() / 1024**2
-    print('Memory usage after optimization is: {:.2f} MB'.format(end_mem))
-    print('Decreased by {:.1f}%'.format(100 * (start_mem - end_mem) / start_mem))
-    return df
+        with open('vacunas_covid.7z', 'wb') as f:
+            f.write(req.content)
 
-
-try:
-    url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
-    headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
-    req = requests.get(url, headers=headers)
-
-    with open('vacunas_covid.7z', 'wb') as f:
-        f.write(req.content)
-
-    hash_downloaded = hs.fileChecksum("vacunas_covid.7z", "sha256")
-
-    # Get hash saved
-    with open('resultados/hashes/hash_scraper.txt') as f:
-        hash_saved = f.readlines()[0]
-
-    if hash_saved==hash_downloaded:
-        print("SAME FILE")
-    else:
-        print("DIFFERENT FILE")
 
         with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
             z.extractall()
 
 
-        chunks = [] # List to keep filtered chunk dataframes.
 
-        for chunked_data in pd.read_csv('vacunas_covid.csv',
-         usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO', 'FABRICANTE'],
-         parse_dates=['FECHA_VACUNACION'],
-         chunksize = 5e4
-         ):
-         
-            chunked_data=reduce_mem_usage(chunked_data)
-            chunks.append(chunked_data)
+        # chunks = [] # List to keep filtered chunk dataframes.
 
-        df = pd.concat(chunks)
-        chunks=[]
+        # for chunked_data in pd.read_csv('vacunas_covid.csv',
+        #  usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO', 'FABRICANTE'],
+        #  parse_dates=['FECHA_VACUNACION'],
+        #  chunksize = 1e7
+        #  ):
+        
+        #     chunked_data=reduce_mem_usage(chunked_data)
+        #     chunks.append(chunked_data)
+
+        # df = pd.concat(chunks)
+        # chunks=[]
+        df=pd.read_csv('vacunas_covid.csv',
+        usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'PROVINCIA', 'DISTRITO', 'FABRICANTE'],
+        parse_dates=['FECHA_VACUNACION'],
+        dtype={'FECHA_CORTE': 'str', 
+                'EDAD': 'Int16',
+                'SEXO': 'boolean',
+                'FECHA_VACUNACION': 'str',
+                'DOSIS': 'Int8',
+                'DEPARTAMENTO': 'str',
+                'PROVINCIA': 'str',
+                'DISTRITO': 'str',
+                'FABRICANTE': 'str',},
+        on_bad_lines="warn",
+        # na_values={
+        #     'FECHA_CORTE': '',
+        #     'EDAD': 0,
+        #     'SEXO': 0,
+        #     'FECHA_VACUNACION': '',
+        #     'DOSIS': 0,
+        #     'DEPARTAMENTO': '',
+        #     'PROVINCIA': '',
+        #     'DISTRITO': '',
+        #     'FABRICANTE': '',
+        # },
+        # true_values=[1],
+        # false_values=[0],
+        low_memory=False,
+        )
 
         print(df.head(10))
+        print(df.info())
         #df=pd.read_csv('vacunas_covid.csv', usecols=['FECHA_CORTE', 'EDAD', 'SEXO', 'FECHA_VACUNACION', 'DOSIS', 'DEPARTAMENTO', 'FABRICANTE'], parse_dates=['FECHA_VACUNACION'])
         fecha_corte=df['FECHA_CORTE'].drop_duplicates().set_axis(['fecha_corte'])
         fecha_corte.to_json("resultados/fecha_corte.json")
@@ -198,30 +182,30 @@ try:
 
         # DIARIO POR DEPARTAMENTO
         list_departamentos = ["AMAZONAS",
-                         "ANCASH",
-                         "APURIMAC",
-                         "AREQUIPA",
-                         "AYACUCHO",
-                         "CAJAMARCA",
-                         "CALLAO",
-                         "CUSCO",
-                         "HUANCAVELICA",
-                         "HUANUCO",
-                         "ICA",
-                         "JUNIN",
-                         "LA LIBERTAD",
-                         "LAMBAYEQUE",
-                         "LIMA",
-                         "LORETO",
-                         "MADRE DE DIOS",
-                         "MOQUEGUA",
-                         "PASCO",
-                         "PIURA",
-                         "PUNO",
-                         "SAN MARTIN",
-                         "TACNA",
-                         "TUMBES",
-                         "UCAYALI"]
+                        "ANCASH",
+                        "APURIMAC",
+                        "AREQUIPA",
+                        "AYACUCHO",
+                        "CAJAMARCA",
+                        "CALLAO",
+                        "CUSCO",
+                        "HUANCAVELICA",
+                        "HUANUCO",
+                        "ICA",
+                        "JUNIN",
+                        "LA LIBERTAD",
+                        "LAMBAYEQUE",
+                        "LIMA",
+                        "LORETO",
+                        "MADRE DE DIOS",
+                        "MOQUEGUA",
+                        "PASCO",
+                        "PIURA",
+                        "PUNO",
+                        "SAN MARTIN",
+                        "TACNA",
+                        "TUMBES",
+                        "UCAYALI"]
 
         for department_name in list_departamentos:
             df_by_department=df[df['DEPARTAMENTO'] == department_name]
@@ -288,10 +272,10 @@ try:
         df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
 
         # Save new hash
-        file = open('resultados/hashes/hash_scraper.txt', 'w')
-        file.write(hash_downloaded)
-        file.close()
+        # file = open('resultados/hashes/hash_scraper.txt', 'w')
+        # file.write(hash_downloaded)
+        # file.close()
 
-except ConnectionResetError:
-    # error de peers
-    pass
+    except ConnectionResetError:
+        # error de peers
+        pass
