@@ -248,24 +248,24 @@ if __name__ == '__main__':
             df_filtered=districts_by_department(df_by_department)
             df_filtered.to_csv(f"resultados/distritos_por_departamento/{department_name.lower()}.csv")
         
-        # TOTAL DE 11 A 16 AÑOS
-        bins = [11,12,13,14,15,16,17]
-        labels = ['11 años','12 años','13 años','14 años','15 años','16 años'] 
-        df_11_16 = df
-        df_11_16['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
-        df_11_16 = df_11_16[df_11_16.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
-        df_11_16.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
-        df_11_16=df_11_16.set_index('GRUPO_ETARIO')
-        df_11_16
+        # # TOTAL DE 11 A 16 AÑOS
+        # bins = [11,12,13,14,15,16,17]
+        # labels = ['11 años','12 años','13 años','14 años','15 años','16 años'] 
+        # df_11_16 = df
+        # df_11_16['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+        # df_11_16 = df_11_16[df_11_16.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
+        # df_11_16.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        # df_11_16=df_11_16.set_index('GRUPO_ETARIO')
+        # df_11_16
 
-        # ACUMULADO DE 11 A 16 AÑOS
-        df_11_16_diario = df
-        df_11_16_diario = df[df['EDAD'].isin([11,12,13,14,15,16])]
-        df_11_16_diario = df_11_16_diario[df_11_16_diario.DOSIS == 2].groupby(['FECHA_VACUNACION'])["DOSIS"].count().reset_index()
-        df_11_16_diario = df_11_16_diario.set_index('FECHA_VACUNACION')
-        df_11_16_diario.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
-        df_11_16_diario_cum = df_11_16_diario.cumsum()
-        df_11_16_diario_cum
+        # # ACUMULADO DE 11 A 16 AÑOS
+        # df_11_16_diario = df
+        # df_11_16_diario = df[df['EDAD'].isin([11,12,13,14,15,16])]
+        # df_11_16_diario = df_11_16_diario[df_11_16_diario.DOSIS == 2].groupby(['FECHA_VACUNACION'])["DOSIS"].count().reset_index()
+        # df_11_16_diario = df_11_16_diario.set_index('FECHA_VACUNACION')
+        # df_11_16_diario.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        # df_11_16_diario_cum = df_11_16_diario.cumsum()
+        # df_11_16_diario_cum
 
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
@@ -275,8 +275,8 @@ if __name__ == '__main__':
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
 
-        df_11_16.to_csv('resultados/11_a_16_anios.csv')
-        df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
+        # df_11_16.to_csv('resultados/11_a_16_anios.csv')
+        # df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
 
         # Save new hash
         # file = open('resultados/hashes/hash_scraper.txt', 'w')
