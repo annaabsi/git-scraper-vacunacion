@@ -162,6 +162,16 @@ if __name__ == '__main__':
         df_edades=df_edades.set_index('GRUPO_ETARIO')
         df_edades
 
+        # ACUMULADO POR GRUPO ETARIO (DOSIS 1)
+        df_edades_1 = df
+        df_edades_1['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+        df_edades_1 = df_edades_1[df_edades_1.DOSIS == 1].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
+        df_edades_1.rename(columns = {'DOSIS':'DOSIS1'}, inplace = True)
+        df_edades_1['POBLACION']=poblacion_por_grupo_etario
+        df_edades_1['PORCENTAJE']=round(df_edades_1['DOSIS1']/df_edades_1['POBLACION']*100,2)
+        df_edades_1=df_edades_1.set_index('GRUPO_ETARIO')
+        df_edades_1
+
         # DIARIO POR FABRICANTE
         df_fabricante=df[['FECHA_VACUNACION','FABRICANTE','SEXO']].groupby(['FECHA_VACUNACION','FABRICANTE']).count()
         df_fabricante=df_fabricante.reset_index()
@@ -272,6 +282,7 @@ if __name__ == '__main__':
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
         df_ambas_dosis_provincia.to_csv('resultados/provincias_criticas.csv')
         df_edades.to_csv('resultados/dosis2_por_edades.csv')
+        df_edades_1.to_csv('resultados/dosis1_por_edades.csv')
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
 
