@@ -150,9 +150,9 @@ if __name__ == '__main__':
         df_ambas_dosis_departamento
 
         # ACUMULADO POR GRUPO ETARIO (DOSIS 2 - VACUNACION COMPLETA)
-        bins = [5,12,18,30,40,50,60,70,80,df['EDAD'].max()+1]
-        labels = ['5 a 11 años','12 a 17 años','18 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 69 años','70 a 79 años','80 años a más']
-        poblacion_por_grupo_etario = [4014401,3489507,6757135,4907228,4059728,3026960,1964335,1064899,438752] 
+        bins = [5,12,18,30,40,50,60,80,df['EDAD'].max()+1]
+        labels = ['5 a 11 años','12 a 17 años','18 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 79 años','80 años a más']
+        poblacion_por_grupo_etario = [4201842,3614488,6788969,5382481,4604711,3524112,3851743,812904]
         df_edades = df
         df_edades['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
         df_edades = df_edades[df_edades.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
