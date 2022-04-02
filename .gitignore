@@ -1,6 +1,5 @@
 .idea
 
-vacunas_covid.7z
 vacunas_covid.csv
 fallecidos_sinadef.csv
 
@@ -15,3 +14,6 @@ notebooks/.ipynb_checkpoints
 /DATA_SINADEF.zip
 
 /DATA_SINADEF
+
+TB_VACUNACION_COVID19.7z
+TB_VACUNACION_COVID19.csv
