@@ -34,7 +34,7 @@ def runCommand(command):
 
 if __name__ == '__main__':
     try:
-        url = "https://cloud.minsa.gob.pe/s/To2QtqoNjKqobfw/download"
+        url = "https://drive.minsa.gob.pe/s/qioYn4FDbsJ62Mw/download"
         headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
         req = requests.get(url, headers=headers)
         print("Downloaded")
