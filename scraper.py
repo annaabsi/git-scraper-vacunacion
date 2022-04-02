@@ -38,13 +38,14 @@ if __name__ == '__main__':
         headers = {"User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:66.0) Gecko/20100101 Firefox/66.0"}
         req = requests.get(url, headers=headers)
         print("Downloaded")
+        print(req.content)
 
-        with open('vacunas_covid.7z', 'wb') as f:
-            f.write(req.content)
+        # with open('vacunas_covid.7z', 'wb') as f:
+        #     f.write(req.content)
 
 
-        with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
-            z.extractall()
+        # with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
+        #     z.extractall()
 
         runCommand('bash process.sh')
 
