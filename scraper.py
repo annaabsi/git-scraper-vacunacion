@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import py7zr
 import requests
+import zipfile
 from py_essentials import hashing as hs
 from pyunpack import Archive
 
@@ -48,8 +49,11 @@ if __name__ == '__main__':
         # with open('vacunas_covid.7z', 'wb') as f:
         #     f.write('vacunas_covid.7z')
 
-        with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
-            z.extractall()
+        # with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
+        #     z.extractall()
+
+        with zipfile.ZipFile('vacunas_covid.zip', 'r') as zip_ref:
+            zip_ref.extractall()
 
         # Archive('vacunas_covid.7z').extractall('.')
 
