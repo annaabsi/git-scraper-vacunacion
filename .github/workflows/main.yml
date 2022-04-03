@@ -24,7 +24,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-          patool extract vacunas_covid.7z
           python scraper.py
 
       - name: commit my files

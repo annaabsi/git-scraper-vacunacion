@@ -10,5 +10,6 @@ xlrd # excel files
 openpyxl # excel files
 # requests_html
 patool
+pyunpack
 py7zr
 py_essentials # hash

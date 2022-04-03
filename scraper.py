@@ -3,6 +3,7 @@ import pandas as pd
 import py7zr
 import requests
 from py_essentials import hashing as hs
+from pyunpack import Archive
 
 
 def summary_by_department(df):
@@ -49,6 +50,8 @@ if __name__ == '__main__':
 
         # with py7zr.SevenZipFile('vacunas_covid.7z', mode='r', password='') as z:
         #     z.extractall()
+
+        Archive('vacunas_covid.7z').extractall('.')
 
         runCommand('bash process.sh')
 
