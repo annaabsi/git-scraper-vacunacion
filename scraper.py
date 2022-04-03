@@ -47,8 +47,8 @@ if __name__ == '__main__':
         # with open('vacunas_covid.7z', 'wb') as f:
         #     f.write(req.content)
 
-        with py7zr.SevenZipFile('vacunas_covid.7z', mode='r', password='') as z:
-            z.extractall()
+        # with py7zr.SevenZipFile('vacunas_covid.7z', mode='r', password='') as z:
+        #     z.extractall()
 
         runCommand('bash process.sh')
 

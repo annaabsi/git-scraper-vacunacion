@@ -9,5 +9,6 @@ pandas
 xlrd # excel files
 openpyxl # excel files
 # requests_html
+patool
 py7zr
 py_essentials # hash
