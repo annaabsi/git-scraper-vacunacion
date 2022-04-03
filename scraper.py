@@ -46,7 +46,7 @@ if __name__ == '__main__':
         print("Downloaded")
 
         with open('vacunas_covid.7z', 'wb') as f:
-            f.write('vacunas_covid.7z')
+            f.write(req.content)
 
         with py7zr.SevenZipFile('vacunas_covid.7z', mode='r') as z:
             z.extractall()
