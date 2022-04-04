@@ -8,37 +8,37 @@ on:
     - cron: '0 12 * * *' # runs at 12, 14, 17 and 22 UTC everyday
 
 jobs:
-  scraper:
-    runs-on: self-hosted
-    steps:
+  # scraper:
+  #   runs-on: self-hosted
+  #   steps:
 
-      - name: checkout repo content
-        uses: actions/checkout@v2 # checkout the repository content to github runner
+  #     - name: checkout repo content
+  #       uses: actions/checkout@v2 # checkout the repository content to github runner
 
-      - name: setup python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9.7' # install the python version needed
+  #     - name: setup python
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: '3.9.7' # install the python version needed
 
-      - name: execute my python script
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          python scraper.py
+  #     - name: execute my python script
+  #       run: |
+  #         python -m pip install --upgrade pip
+  #         pip install -r requirements.txt
+  #         python scraper.py
 
-      - name: commit my files
-        run: |
-          git pull
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add -A
-          git commit --allow-empty -m "update data daily vacunacion" -a
+  #     - name: commit my files
+  #       run: |
+  #         git pull
+  #         git config --local user.email "action@github.com"
+  #         git config --local user.name "GitHub Action"
+  #         git add -A
+  #         git commit --allow-empty -m "update data daily vacunacion" -a
 
-      - name: push my changes
-        uses: ad-m/github-push-action@v0.6.0
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+  #     - name: push my changes
+  #       uses: ad-m/github-push-action@v0.6.0
+  #       with:
+  #         github_token: ${{ secrets.GITHUB_TOKEN }}
+  #         branch: main
 
   # scraper-uci:
   #   runs-on: self-hosted
