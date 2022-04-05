@@ -24,7 +24,7 @@ def districts_by_department(df):
     df=df[df.DOSIS == 2].groupby(['DEPARTAMENTO','DISTRITO', 'DOSIS']).count()
     df.columns=['DOSIS2']
     df = pd.merge(df, df_poblacion_distritos,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
-    df['INDICE']=round(df['DOSIS2']/df['POBLACION']*100,2)
+    df['INDICE']=round(df['DOSIS3']/df['POBLACION']*100,2)
     return df
 
 # run bash script to download data
@@ -144,27 +144,27 @@ if __name__ == '__main__':
         235194,
         597287]
 
-        # ACUMULADO POR DEPARTAMENTO (DOSIS 2 - VACUNACION COMPLETA)
+        # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - DOSIS REFUERZO)
         df_ambas_dosis_departamento=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.reset_index()
         df_ambas_dosis_departamento=df_ambas_dosis_departamento[df_ambas_dosis_departamento['DOSIS'].isin([1,2,3])]
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
         df_ambas_dosis_departamento.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_ambas_dosis_departamento['POBLACION']=col_poblacion
-        df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS2']/(df_ambas_dosis_departamento['POBLACION']/100000)).astype('int')
+        df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS3']/(df_ambas_dosis_departamento['POBLACION']/100000)).astype('int')
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.fillna(0).astype('int')
         df_ambas_dosis_departamento
 
-        # ACUMULADO POR GRUPO ETARIO (DOSIS 2 - VACUNACION COMPLETA)
+        # ACUMULADO POR GRUPO ETARIO (DOSIS 3 - DOSIS REFUERZO)
         bins = [5,12,18,30,40,50,60,80,df['EDAD'].max()+1]
         labels = ['5 a 11 años','12 a 17 años','18 a 29 años','30 a 39 años','40 a 49 años','50 a 59 años','60 a 79 años','80 años a más']
         poblacion_por_grupo_etario = [4201842,3614488,6788969,5382481,4604711,3524112,3851743,812904]
         df_edades = df
         df_edades['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
-        df_edades = df_edades[df_edades.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
-        df_edades.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        df_edades = df_edades[df_edades.DOSIS == 3].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
+        df_edades.rename(columns = {'DOSIS':'DOSIS3'}, inplace = True)
         df_edades['POBLACION']=poblacion_por_grupo_etario
-        df_edades['PORCENTAJE']=round(df_edades['DOSIS2']/df_edades['POBLACION']*100,2)
+        df_edades['PORCENTAJE']=round(df_edades['DOSIS3']/df_edades['POBLACION']*100,2)
         df_edades=df_edades.set_index('GRUPO_ETARIO')
         df_edades
 
@@ -242,7 +242,7 @@ if __name__ == '__main__':
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.pivot(index='PROVINCIA', columns='DOSIS', values='SEXO')
         df_ambas_dosis_provincia.columns=['DOSIS1','DOSIS2','DOSIS3']
         df_ambas_dosis_provincia = pd.merge(df_ambas_dosis_provincia, df_poblacion_provincias,  how='inner', on=['PROVINCIA'])
-        df_ambas_dosis_provincia['INDICE']=round(df_ambas_dosis_provincia['DOSIS2']/df_ambas_dosis_provincia['POBLACION']*100,2)
+        df_ambas_dosis_provincia['INDICE']=round(df_ambas_dosis_provincia['DOSIS3']/df_ambas_dosis_provincia['POBLACION']*100,2)
         df_ambas_dosis_provincia=df_ambas_dosis_provincia.fillna(0)
         df_ambas_dosis_provincia
 
