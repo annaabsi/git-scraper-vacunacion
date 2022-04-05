@@ -21,8 +21,8 @@ def summary_by_department(df):
 def districts_by_department(df):
 
     df=df[['DEPARTAMENTO','DISTRITO','DOSIS','SEXO']]
-    df=df[df.DOSIS == 2].groupby(['DEPARTAMENTO','DISTRITO', 'DOSIS']).count()
-    df.columns=['DOSIS2']
+    df=df[df.DOSIS == 3].groupby(['DEPARTAMENTO','DISTRITO', 'DOSIS']).count()
+    df.columns=['DOSIS3']
     df = pd.merge(df, df_poblacion_distritos,  how='inner', on=['DEPARTAMENTO','DISTRITO'])
     df['INDICE']=round(df['DOSIS3']/df['POBLACION']*100,2)
     return df
