@@ -168,6 +168,16 @@ if __name__ == '__main__':
         df_edades=df_edades.set_index('GRUPO_ETARIO')
         df_edades
 
+        # ACUMULADO POR GRUPO ETARIO (DOSIS 2)
+        df_edades_2 = df
+        df_edades_2['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
+        df_edades_2 = df_edades_2[df_edades_2.DOSIS == 2].groupby(['GRUPO_ETARIO'])["DOSIS"].count().reset_index()
+        df_edades_2.rename(columns = {'DOSIS':'DOSIS2'}, inplace = True)
+        df_edades_2['POBLACION']=poblacion_por_grupo_etario
+        df_edades_2['PORCENTAJE']=round(df_edades_2['DOSIS2']/df_edades_2['POBLACION']*100,2)
+        df_edades_2=df_edades_2.set_index('GRUPO_ETARIO')
+        df_edades_2
+
         # ACUMULADO POR GRUPO ETARIO (DOSIS 1)
         df_edades_1 = df
         df_edades_1['GRUPO_ETARIO'] = pd.cut(df['EDAD'], bins=bins, labels=labels, right=False)
@@ -287,7 +297,8 @@ if __name__ == '__main__':
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
         df_ambas_dosis_provincia.to_csv('resultados/provincias_criticas.csv')
-        df_edades.to_csv('resultados/dosis2_por_edades.csv')
+        df_edades.to_csv('resultados/dosis3_por_edades.csv')
+        df_edades_2.to_csv('resultados/dosis2_por_edades.csv')
         df_edades_1.to_csv('resultados/dosis1_por_edades.csv')
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
