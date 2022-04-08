@@ -104,17 +104,17 @@ if __name__ == '__main__':
         df_poblacion_distritos=pd.read_csv('poblacion_distritos.csv')
         df_poblacion_provincias=pd.read_csv('poblacion_provincias.csv')
 
-        # DIARIO DOSIS 1 Y DOSIS 2
+        # DIARIO DOSIS 1, DOSIS 2, DOSIS 3 Y DOSIS 4
         df_ambas_dosis=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
         df_ambas_dosis=df_ambas_dosis.reset_index()
-        df_ambas_dosis=df_ambas_dosis[df_ambas_dosis['DOSIS'].isin([1,2,3])]
+        df_ambas_dosis=df_ambas_dosis[df_ambas_dosis['DOSIS'].isin([1,2,3,4])]
         df_ambas_dosis=df_ambas_dosis.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
         df_ambas_dosis=df_ambas_dosis.rename_axis(None, axis=1)
-        df_ambas_dosis.columns=['DOSIS1','DOSIS2','DOSIS3']
+        df_ambas_dosis.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
         df_ambas_dosis=df_ambas_dosis.fillna(0).astype('int')
         df_ambas_dosis
 
-        # ACUMULADO DOSIS 1 Y DOSIS 2
+        # ACUMULADO DOSIS 1, DOSIS 2, DOSIS 3 Y DOSIS 4
         df_ambas_dosis_cum=df_ambas_dosis.cumsum()
         df_ambas_dosis_cum
 
@@ -208,9 +208,9 @@ if __name__ == '__main__':
         # d = []
         # for number in scrap_contador_vacunados:
         #     d.append(number.text)
-        d = [df_ambas_dosis_cum['DOSIS1'][-1], df_ambas_dosis_cum['DOSIS2'][-1], df_ambas_dosis_cum['DOSIS3'][-1], df_ambas_dosis['DOSIS1'][-1], df_ambas_dosis['DOSIS2'][-1], df_ambas_dosis_cum.iloc[-1].sum(), df_ambas_dosis.iloc[-1].sum(), df_ambas_dosis_cum['DOSIS2'][-1]]
+        d = [df_ambas_dosis_cum['DOSIS1'][-1], df_ambas_dosis_cum['DOSIS2'][-1], df_ambas_dosis_cum['DOSIS3'][-1], df_ambas_dosis_cum['DOSIS4'][-1], df_ambas_dosis['DOSIS1'][-1], df_ambas_dosis['DOSIS2'][-1], df_ambas_dosis_cum.iloc[-1].sum(), df_ambas_dosis.iloc[-1].sum(), df_ambas_dosis_cum['DOSIS2'][-1]]
         d = list(map(str,d))
-        contador_vacunados = pd.Series(d,index=['total_dosis1','total_dosis2','total_dosis3','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
+        contador_vacunados = pd.Series(d,index=['total_dosis1','total_dosis2','total_dosis3','total_dosis4','ayer_dosis1','ayer_dosis2','total_dosis','ayer_total_dosis','vacunacion_completa'])
         contador_vacunados.to_json('resultados/pongo_el_hombro.json')
 
         # DIARIO POR DEPARTAMENTO
