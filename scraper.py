@@ -11,10 +11,10 @@ def summary_by_department(df):
 
     df=df[['FECHA_VACUNACION','DOSIS','SEXO']].groupby(['FECHA_VACUNACION','DOSIS']).count()
     df=df.reset_index()
-    df=df[df['DOSIS'].isin([1,2,3])]
+    df=df[df['DOSIS'].isin([1,2,3,4])]
     df=df.pivot(index='FECHA_VACUNACION', columns='DOSIS', values='SEXO')
     df=df.rename_axis(None, axis=1)
-    df.columns=['DOSIS1','DOSIS2','DOSIS3']
+    df.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
     df=df.fillna(0).astype('int')
     return df
 
