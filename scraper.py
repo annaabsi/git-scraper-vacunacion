@@ -184,8 +184,7 @@ if __name__ == '__main__':
         # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - MAYORES DE 60)
         df_ambas_dosis_mayores60=df[['DEPARTAMENTO','DOSIS','SEXO','EDAD']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
         df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.reset_index()
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[df_ambas_dosis_mayores60['EDAD']>59]
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[df_ambas_dosis_mayores60['DOSIS'].isin([1,2,3,4])]
+        df_ambas_dosis_mayores60 = df_ambas_dosis_mayores60[(df_ambas_dosis_mayores60['EDAD']>59) & (df_ambas_dosis_mayores60['DOSIS'].isin([1,2,3,4]))]
         df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
         df_ambas_dosis_mayores60.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
         df_ambas_dosis_mayores60['POBLACION']=col_poblacion_mayores60
