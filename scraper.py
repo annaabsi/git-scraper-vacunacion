@@ -144,6 +144,32 @@ if __name__ == '__main__':
         235194,
         597287]
 
+        col_poblacion_mayores60=[54524,
+        186422,
+        64410,
+        223909,
+        90929,
+        213109,
+        161120,
+        181937,
+        59476,
+        104925,
+        124673,
+        185322,
+        279440,
+        198682,
+        1643835,
+        118323,
+        14608,
+        30213,
+        34196,
+        269868,
+        179319,
+        107269,
+        47369,
+        30215,
+        60554]
+
         # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - DOSIS REFUERZO)
         df_ambas_dosis_departamento=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.reset_index()
@@ -154,6 +180,18 @@ if __name__ == '__main__':
         df_ambas_dosis_departamento['INDICE']=round(df_ambas_dosis_departamento['DOSIS3']/(df_ambas_dosis_departamento['POBLACION']/100000)).astype('int')
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.fillna(0).astype('int')
         df_ambas_dosis_departamento
+
+        # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - MAYORES DE 60)
+        df_ambas_dosis_mayores60=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
+        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.reset_index()
+        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[df_ambas_dosis_mayores60['EDAD']>59]
+        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[df_ambas_dosis_mayores60['DOSIS'].isin([1,2,3,4])]
+        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
+        df_ambas_dosis_mayores60.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
+        df_ambas_dosis_mayores60['POBLACION']=col_poblacion_mayores60
+        df_ambas_dosis_mayores60['INDICE']=round(df_ambas_dosis_mayores60['DOSIS3']/(df_ambas_dosis_mayores60['POBLACION']/100000)).astype('int')
+        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.fillna(0).astype('int')
+        df_ambas_dosis_mayores60
 
         # ACUMULADO POR GRUPO ETARIO (DOSIS 3 - DOSIS REFUERZO)
         bins = [5,12,18,30,40,50,60,80,df['EDAD'].max()+1]
@@ -296,6 +334,7 @@ if __name__ == '__main__':
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
+        df_ambas_dosis_mayores60.to_csv('resultados/departamentos_mayores60.csv')
         df_ambas_dosis_provincia.to_csv('resultados/provincias_criticas.csv')
         df_edades.to_csv('resultados/dosis3_por_edades.csv')
         df_edades_2.to_csv('resultados/dosis2_por_edades.csv')
