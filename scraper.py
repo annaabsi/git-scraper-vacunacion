@@ -232,7 +232,7 @@ if __name__ == '__main__':
         df_dosis2_mayores12
 
         # USO DE MASCARILLAS
-        df_mascarillas=df_dosis3_mayores60.merge(df_dosis2_mayores12, how='inner', on='DEPARTAMENTO')
+        df_mascarillas=df_dosis2_mayores12.merge(df_dosis3_mayores60, how='inner', on='DEPARTAMENTO')
         df_mascarillas
 
         # ACUMULADO POR GRUPO ETARIO (DOSIS 3 - DOSIS REFUERZO)
