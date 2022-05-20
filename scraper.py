@@ -170,6 +170,32 @@ if __name__ == '__main__':
         30215,
         60554]
 
+        col_poblacion_mayores12 = [381935,
+        1043294,
+        385220,
+        1312448,
+        571423,
+        1325736,
+        955873,
+        1214687,
+        362867,
+        711285,
+        768555,
+        1167696,
+        1695977,
+        1150472,
+        9501334,
+        902747,
+        143868,
+        170284,
+        245243,
+        1685936,
+        1076258,
+        784828,
+        325369,
+        201573,
+        494500]
+
         # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - DOSIS REFUERZO)
         df_ambas_dosis_departamento=df[['DEPARTAMENTO','DOSIS','SEXO']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
         df_ambas_dosis_departamento=df_ambas_dosis_departamento.reset_index()
@@ -182,16 +208,32 @@ if __name__ == '__main__':
         df_ambas_dosis_departamento
 
         # ACUMULADO POR DEPARTAMENTO (DOSIS 3 - MAYORES DE 60)
-        df_ambas_dosis_mayores60=df[df['EDAD']>59]
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[['DEPARTAMENTO','DOSIS','SEXO','EDAD']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.reset_index()
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60[df_ambas_dosis_mayores60['DOSIS'].isin([1,2,3,4])]
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
-        df_ambas_dosis_mayores60.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
-        df_ambas_dosis_mayores60['POBLACION']=col_poblacion_mayores60
-        df_ambas_dosis_mayores60['INDICE']=round(df_ambas_dosis_mayores60['DOSIS3']/(df_ambas_dosis_mayores60['POBLACION']/100000)).astype('int')
-        df_ambas_dosis_mayores60=df_ambas_dosis_mayores60.fillna(0).astype('int')
-        df_ambas_dosis_mayores60
+        df_dosis3_mayores60=df[df['EDAD']>59]
+        df_dosis3_mayores60=df_dosis3_mayores60[['DEPARTAMENTO','DOSIS','SEXO','EDAD']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
+        df_dosis3_mayores60=df_dosis3_mayores60.reset_index()
+        df_dosis3_mayores60=df_dosis3_mayores60[df_dosis3_mayores60['DOSIS'].isin([1,2,3,4])]
+        df_dosis3_mayores60=df_dosis3_mayores60.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
+        df_dosis3_mayores60.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
+        df_dosis3_mayores60['POBLACION']=col_poblacion_mayores60
+        df_dosis3_mayores60['INDICE3']=round(df_dosis3_mayores60['DOSIS3']/(df_dosis3_mayores60['POBLACION']/100000)).astype('int')
+        df_dosis3_mayores60=df_dosis3_mayores60.fillna(0).astype('int')
+        df_dosis3_mayores60
+
+        # ACUMULADO POR DEPARTAMENTO (DOSIS 2 - MAYORES DE 12)
+        df_dosis2_mayores12=df[df['EDAD']>11]
+        df_dosis2_mayores12=df_dosis2_mayores12[['DEPARTAMENTO','DOSIS','SEXO','EDAD']].groupby(['DEPARTAMENTO', 'DOSIS']).count()
+        df_dosis2_mayores12=df_dosis2_mayores12.reset_index()
+        df_dosis2_mayores12=df_dosis2_mayores12[df_dosis2_mayores12['DOSIS'].isin([1,2,3,4])]
+        df_dosis2_mayores12=df_dosis2_mayores12.pivot(index='DEPARTAMENTO', columns='DOSIS', values='SEXO')
+        df_dosis2_mayores12.columns=['DOSIS1','DOSIS2','DOSIS3','DOSIS4']
+        df_dosis2_mayores12['POBLACION']=col_poblacion_mayores12
+        df_dosis2_mayores12['INDICE2']=round(df_dosis2_mayores12['DOSIS2']/(df_dosis2_mayores12['POBLACION']/100000)).astype('int')
+        df_dosis2_mayores12=df_dosis2_mayores12.fillna(0).astype('int')
+        df_dosis2_mayores12
+
+        # USO DE MASCARILLAS
+        df_mascarillas=df_dosis3_mayores60.merge(df_dosis2_mayores12, how='inner', on='DEPARTAMENTO')
+        df_mascarillas
 
         # ACUMULADO POR GRUPO ETARIO (DOSIS 3 - DOSIS REFUERZO)
         bins = [5,12,18,30,40,50,60,80,df['EDAD'].max()+1]
@@ -334,7 +376,9 @@ if __name__ == '__main__':
         df_ambas_dosis.to_csv('resultados/dosis1y2.csv')
         df_ambas_dosis_cum.to_csv('resultados/acumulados1y2.csv')
         df_ambas_dosis_departamento.to_csv('resultados/departamentos.csv')
-        df_ambas_dosis_mayores60.to_csv('resultados/departamentos_mayores60.csv')
+        df_dosis3_mayores60.to_csv('resultados/departamentos_mayores60.csv')
+        df_dosis2_mayores12.to_csv('resultados/departamentos_mayores12.csv')
+        df_mascarillas.to_csv('resultados/mascarillas.csv')
         df_ambas_dosis_provincia.to_csv('resultados/provincias_criticas.csv')
         df_edades.to_csv('resultados/dosis3_por_edades.csv')
         df_edades_2.to_csv('resultados/dosis2_por_edades.csv')
