@@ -118,6 +118,10 @@ if __name__ == '__main__':
         df_ambas_dosis_cum=df_ambas_dosis.cumsum()
         df_ambas_dosis_cum
 
+        # DIARIO DOSIS 1, DOSIS 2, DOSIS 3 Y DOSIS 4 DESDE 2022
+        df_ambas_dosis_2022=df_ambas_dosis[df_ambas_dosis.index >= '2022-01-01']
+        df_ambas_dosis_2022
+
         col_poblacion=[452125,
         1189403,
         440629,
@@ -385,6 +389,7 @@ if __name__ == '__main__':
         df_edades_1.to_csv('resultados/dosis1_por_edades.csv')
         df_fabricante.to_csv('resultados/diario_por_fabricante.csv')
         df_fabricante_cum.to_csv('resultados/acumulado_por_fabricante.csv')
+        df_ambas_dosis_2022.to_csv('resultados/dosis1y2_2022.csv')
 
         # df_11_16.to_csv('resultados/11_a_16_anios.csv')
         # df_11_16_diario_cum.to_csv('resultados/acumulado_11_a_16_anios.csv')
