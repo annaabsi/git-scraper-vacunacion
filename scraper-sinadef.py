@@ -39,7 +39,7 @@ try:
 
     _, _ = _execute_shell_command(['unzip', 'DATA_SINADEF.zip'])
 
-    xls = pd.read_excel('./DATA_SINADEF/SINADEF_DATOS_ABIERTOS.xlsx',engine='openpyxl', index_col=0)  # <-- add .read()
+    xls = pd.read_excel('./SINADEF_DATOS_ABIERTOS.xlsx',engine='openpyxl', index_col=0)  # <-- add .read()
     # xls
 
     xls.drop(['DEBIDO A (CAUSA A)', 'CAUSA A (CIE-X)', 'DEBIDO A (CAUSA B)', 'CAUSA B (CIE-X)', 'DEBIDO A (CAUSA C)', 'CAUSA C (CIE-X)','DEBIDO A (CAUSA D)', 'CAUSA D (CIE-X)', 'DEBIDO A (CAUSA E)', 'CAUSA E (CIE-X)', 'DEBIDO A (CAUSA F)', 'CAUSA F (CIE-X)'], axis=1, inplace=True)
