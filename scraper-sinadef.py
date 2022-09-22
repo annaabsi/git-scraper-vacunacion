@@ -1,21 +1,22 @@
-import subprocess
+#import subprocess
 from datetime import date, timedelta
+import zipfile
 
 import numpy as np
 import pandas as pd
-from py_essentials import hashing as hs
+#from py_essentials import hashing as hs
 
-def _execute_shell_command(command):
-    with subprocess.Popen(command,
-                          stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT
-                          ) as terminal_subprocess:
-        stdout, stderr = terminal_subprocess.communicate()
+# def _execute_shell_command(command):
+#     with subprocess.Popen(command,
+#                           stdout=subprocess.PIPE,
+#                           stderr=subprocess.STDOUT
+#                           ) as terminal_subprocess:
+#         stdout, stderr = terminal_subprocess.communicate()
 
-        return stdout, stderr
+#         return stdout, stderr
 
 try:
-    _, _ = _execute_shell_command(['wget', '-O', 'DATA_SINADEF.zip', 'https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download'])
+    #_, _ = _execute_shell_command(['wget', '-O', 'DATA_SINADEF.zip', 'https://cloud.minsa.gob.pe/s/NctBnHXDnocgWAg/download'])
     #_, _ = _execute_shell_command(['md5sum', 'DATA_SINADEF.zip', '>', './resultados/hashes/hash_sinadef_downloaded.txt'])
 
 
@@ -37,9 +38,12 @@ try:
     # else:
     #     print("DIFFERENT FILE")
 
-    _, _ = _execute_shell_command(['unzip', 'DATA_SINADEF.zip'])
+    #_, _ = _execute_shell_command(['unzip', 'DATA_SINADEF.zip'])
 
-    xls = pd.read_excel('./SINADEF_DATOS_ABIERTOS.xlsx',engine='openpyxl', index_col=0)  # <-- add .read()
+    with zipfile.ZipFile('DATA_SINADEF.zip', 'r') as zip_ref:
+            zip_ref.extractall()
+
+    xls = pd.read_excel('./DATA_SINADEF/SINADEF_DATOS_ABIERTOS.xlsx',engine='openpyxl', index_col=0)  # <-- add .read()
     # xls
 
     xls.drop(['DEBIDO A (CAUSA A)', 'CAUSA A (CIE-X)', 'DEBIDO A (CAUSA B)', 'CAUSA B (CIE-X)', 'DEBIDO A (CAUSA C)', 'CAUSA C (CIE-X)','DEBIDO A (CAUSA D)', 'CAUSA D (CIE-X)', 'DEBIDO A (CAUSA E)', 'CAUSA E (CIE-X)', 'DEBIDO A (CAUSA F)', 'CAUSA F (CIE-X)'], axis=1, inplace=True)
@@ -86,13 +90,13 @@ try:
 
     df.to_csv('resultados/fallecidos_edad.csv', index=False)
 
-    _, _ = _execute_shell_command(['rm','-rf', './DATA_SINADEF/'])
-    _, _ = _execute_shell_command(['rm','-f', 'download'])
+    # _, _ = _execute_shell_command(['rm','-rf', './DATA_SINADEF/'])
+    # _, _ = _execute_shell_command(['rm','-f', 'download'])
 
-    # Save new hash
-    file = open('resultados/hashes/hash_sinadef.txt', 'w')
-    file.write(hash_downloaded)
-    file.close()
+    # # Save new hash
+    # file = open('resultados/hashes/hash_sinadef.txt', 'w')
+    # file.write(hash_downloaded)
+    # file.close()
 
 except ConnectionResetError:
     pass
