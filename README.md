@@ -1,5 +1,3 @@
-[![scraper-daily](https://github.com/annaabsi/git-scraper-vacunacion/actions/workflows/main.yml/badge.svg)](https://github.com/annaabsi/git-scraper-vacunacion/actions/workflows/main.yml)
-
 <!-- PROJECT HEADER -->
 <br />
 <p align="center">
