@@ -9,7 +9,7 @@ on:
 
 jobs:
   scraper:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
 
       - name: checkout repo content
